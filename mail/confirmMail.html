@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/style_Beta.css">
+    <style>
+        .mail {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            padding: 30px 50px;
+            background-color: rgb(195, 195, 195);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="mail">
+            <p>Nhap 6 so da duoc gui den email cua ban</p>
+            <input type="number" name="key" id="key" minlength="6" maxlength="6">
+            <button id="go">Nhap</button>
+        </div>
+    </div>
+
+    <p class="notification" id="notification" style="text-align: center;"></p>
+
+    <script>
+        const xml = new XMLHttpRequest()
+
+        const key =document.getElementById("key");
+        key.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        $("#go").click(function () {
+            if ($("#key").val() < 6 || $("#key").val() > 6) {
+                $(".notification").html("Nhap du 6 so please")
+                $(".notification").css("display","block")
+                $("#key").val("")
+                setTimeout(() => {
+                    $(".notification").html("")
+                    $(".notification").css("display","none")
+                },2000)
+                return
+            }
+            xml.open("POST","")
+            xml.onload = () => {
+                if (xml.readyState == 4 && xml.status == 200) {
+                    json = JSON.parse(xml.responseText);
+                    if (json == "Y") {
+                        $(".notification").html("Xac nhan thanh cong")
+                        $(".notification").css("display","block")
+                        $("#key").val("")
+                        setTimeout(() => {
+                            $(".notification").html("")
+                            $(".notification").css("display","none")
+                            location.href = "/info-acc"
+                        },3000)
+                    }else {
+                        $(".notification").html("Ma khong chinh xac")
+                        $(".notification").css("display","block")
+                        $("#key").val("")
+                        setTimeout(() => {
+                            $(".notification").html("")
+                            $(".notification").css("display","none")
+                        },2000)
+                    }
+                }
+            }
+            xml.send()
+        })
+
+    </script>
+</body>
+</html>

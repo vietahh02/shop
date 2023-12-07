@@ -1,0 +1,120 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  background-image: linear-gradient(to right, rgb(50, 172, 158), rgb(100, 100, 255), rgb(211, 46, 211), #fc5ca4);
+
+}
+
+.background-login {
+  margin: auto;
+  text-align: center;
+  
+  height: 100vh;
+}
+
+.cover {
+  padding-top: 50px;
+  padding-bottom: 50px;
+
+}
+
+.login {
+  margin: auto;
+  width: 500px;
+  background-color: white;
+  border-radius: 10px;
+}
+.login div h1 {
+  padding: 40px 0;
+  font-weight: 900;
+}
+.login .form {
+  position: relative;
+  text-align: left;
+  padding-left: 50px;
+}
+.login .form input[type=text],
+.login .form input[type=password] {
+  position: relative;
+  left: 15px;
+  border: none;
+  width: 330px;
+  padding: 10px 20px 10px 15px;
+  font-size: 16px;
+  margin-top: 5px;
+}
+.login .form input[type=text]::-moz-placeholder, .login .form input[type=password]::-moz-placeholder {
+  color: rgb(199, 199, 199);
+}
+.login .form input[type=text]::placeholder,
+.login .form input[type=password]::placeholder {
+  color: rgb(199, 199, 199);
+}
+.login .form div {
+  border-bottom: 2px solid rgb(199, 199, 199);
+  width: 400px;
+  padding-bottom: 5px;
+}
+.login .form i {
+  position: relative;
+  left: 10px;
+  color: rgb(199, 199, 199);
+  font-size: 14px;
+}
+.login .form .forget {
+  position: relative;
+  color: black;
+  text-decoration: none;
+  left: 260px;
+}
+.login .form .forget:hover {
+  color: blue;
+  text-decoration: underline;
+}
+.login .form button {
+  background-image: linear-gradient(to right, rgb(50, 172, 158), rgb(100, 100, 255), rgb(211, 46, 211), #fc5ca4);
+  margin: auto;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  width: 400px;
+  padding: 10px 0;
+  border: none;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  margin: 20px 0 60px;
+  cursor: pointer;
+}
+.login .login-diff {
+  padding-bottom: 50px;
+}
+.login .login-diff .diff {
+  padding: 30px;
+  display: inline-flex;
+  gap: 15px;
+}
+.login .login-diff .diff a i {
+  font-size: 40px;
+}
+.login .sign-up {
+  padding: 30px;
+}
+.login .sign-up div {
+  padding-bottom: 20px;
+}
+.login .sign-up .up {
+  margin: 30px;
+  color: black;
+  text-decoration: none;
+}
+.login .sign-up .up:hover {
+  color: blue;
+  text-decoration: underline;
+}/*# sourceMappingURL=styleh.css.map */

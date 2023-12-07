@@ -1,0 +1,144 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+}
+
+.container-admin {
+    max-width: 1600px;
+    width: 100%;
+}
+input[type="number"] {
+    -webkit-appearance: textfield;
+       -moz-appearance: textfield;
+            appearance: textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+  }
+a {
+    color: black;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+a:hover {
+    color: darkgray;
+    padding: 0 25px;
+}
+
+.add-new {
+    color: rgb(135, 195, 255);
+}
+
+.add-new:hover {
+    color: rgb(51, 145, 240);
+}
+
+.home {
+    margin: 80px 30px;
+}
+
+.container-admin div {
+    display: flex;
+    align-items: center;
+}
+
+.container-admin div button {
+    color: red;
+    margin-left: 20px;
+}
+
+.container-admin div button:hover {
+    color: brown;
+}
+
+.container-admin .order {
+    position: relative;
+    display: grid;
+    cursor: pointer;
+}
+
+.container-admin .order .choose {
+    position: relative;
+    /* display: block; */
+    display: none;
+}
+
+.banner {
+    display: grid;
+    gap: 20px;
+}
+
+.banner ele {
+    display: flex;
+    align-content: center!important;
+    flex-direction: row !important;
+    gap: 20px;
+}
+
+.banner img {
+    width: 833px;
+    height: 375px;
+    object-fit: cover;
+}
+
+.new-ban {
+    display: grid;
+}
+
+.container-sub-image {
+    max-width: 700px;
+    width: 100%;
+}
+
+.container-sub-image .add-new {
+    margin: 20px 0;
+}
+
+.container-sub-image img {
+    max-width: 200px;
+    height: 100px;
+    width: 100%;
+    object-fit: contain;
+    background-color: rgb(234, 234, 234);
+}
+
+.container-sub-image .item img {
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.container-sub-image .item button {
+    position: relative;
+    color: red;
+    border: none;
+    padding: 5px 10px;
+    font-size: 20px;
+    background: none;
+    top: -10px;
+    cursor: pointer;
+}
+
+.container-sub-color {
+    max-width: 700px;
+    width: 100%;
+}
+.container-sub-color .list-colors .item-color {
+    display: flex;
+    align-items: center;
+}
+.container-sub-color .list-colors .item-color p{
+    max-width: 100px;
+    width: 100%;
+    height: 15px;
+}
+
+.container-sub-color .list-colors .item-color h3{
+    font-weight: 500;
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <script src="../static/js/script1.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="back">
+            <a href="/products">Back</a>
+        </div>
+        <div class="login">
+            {{if .Info}}
+            <a href="/images?id={{.Info.Id}}#">List Image</a>
+            <a href="/colors?id={{.Info.Id}}#">List Color</a>
+            <form action="/info" method="post" enctype="multipart/form-data">
+                <label for="myFile">Image:
+                    <img src="{{.Info.Image}}"><br>
+                    <input type="file" name="myFile" id="myFile">
+                    <input type="text" name="checkImg" id="checkImg" value="{{.Info.Image}}" >
+                </label><br>
+                <label for="name">
+                    Name:<input type="text" name="name" id="name" value="{{.Info.Name}}">
+                </label><br>
+                <label for="price">
+                    Price:<input type="number" name="price" id="price" min="0" value="{{.Info.Price}}">
+                </label><br>
+                <label for="discount">
+                    Discount:<input type="number" name="discount" id="discount" min="0" max="1" step="0.01" value="{{.Info.Discount}}">
+                </label><br>
+                <label for="inStock">
+                    In Stock:<input type="number" name="inStock" id="inStock" min="0" step="1" value="{{.Info.InStock}}">
+                </label><br>
+                <label for="cate">Category:
+                    <select name="cate" id="cate">
+                        <option value="{{.Info.Category.IdCate}}" style="color: #ffc808">{{.Info.Category.NameCate}}</option>
+                        {{if .ListCate}}
+                            {{range $i, $e := .ListCate}}
+                        <option value="{{$e.IdCate}}">{{$e.NameCate}}</option>
+                            {{end}}
+                        {{end}}
+                    </select>
+                </label><br>
+                <input type="submit" value="Submit">
+            </form>
+                <button onclick="myFunction()" class="delete">Delete</button>
+            {{end}}
+        </div>
+    </div>
+    <script>
+        function myFunction() {
+            if (confirm("Delete this product!!!")) {
+                window.location.href = "/delete"
+            }
+        }
+    </script>
+</body>
+</html>

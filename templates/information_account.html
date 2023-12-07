@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+    <style>
+        .container {
+            margin: 20px;
+        }
+        label {
+            margin: 5px 0;
+        }
+        input[type="text"],input[type="number"],input[type="email"] {
+            width: 280px;
+        }
+        .change {
+            position: relative;
+            top: 20px;
+            color: green;
+        }
+        .image {
+            width: 50px;
+            height: auto;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container1">
+        {{template "Header".}}
+    </div>
+    
+    <div class="container">
+        <form action="/info-acc" method="post" class="g" enctype="multipart/form-data"> 
+            <label for="img">Image:
+                <img src="{{.I.Image}}" class="image"><br>
+                <input type="file" name="img" id="img" style="display: none;">
+                <input type="text" name="checkImg" id="checkImg" style="display: none;">
+            </label><br>
+            <label for="name">
+                <span>FullName:</span><br> 
+                <input type="text" id="name" name="name" placeholder="Enter your name" value="{{.I.FullName}}">
+            </label><br>
+            <label for="phone">
+                <span>Phone:</span><br> 
+                <input type="number" id="phone" name="phone" placeholder="Enter your phone number" value="{{.I.PhoneNumber}}">
+            </label><br>
+            <label for="email">
+                <span>Email:</span><br> 
+                <input type="email" id="email" name="email" placeholder="Enter your email" value="{{.I.Email}}">
+            </label><br><br>
+            {{if .Err}}
+                <span style="color: red;">{{.Err}}</span><br>
+            {{end}}
+            {{if .Oke}}
+                <span style="color: green;">{{.Oke}}</span><br>
+            {{end}}
+            <input type="submit" value="Update">
+        </form>
+        <a href="/change-password" class="change">Change password >></a>
+    </div>
+    <div class="container1">
+        {{template "Footer".}}
+    </div>
+    
+</body>
+</html>

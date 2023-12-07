@@ -1,0 +1,374 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.notification {
+    position: fixed;
+    left: 50%;
+    top: 30%;
+    color: rgb(0, 255, 170);
+    font-size: 30px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+body {
+    width: 100%;
+    background-color: rgb(222, 222, 222);
+}
+
+.clicked {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.container {
+    max-width: 1000px;
+    width: 100%;
+    display: flex;
+    gap: 1%;
+    margin: 10px auto;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container hr {
+    border: none;
+    background-color: rgb(240, 240, 240);
+    height: 1px;
+}
+
+.container .left {
+    width: 500px;
+
+}
+
+/*************picture***************/
+.container .left .picture {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.container .left .picture .zoom picture img {
+    width: 100%;
+    object-fit: cover;
+    height: 400px;
+}
+
+.container .left .picture .list {
+    display: flex;
+}
+
+.container .left .picture {
+    position: relative;
+}
+
+.container .left .picture button {
+    position: absolute;
+    top: 40%;
+    cursor: pointer;
+    color: rgb(230, 230, 230);
+    border: none;
+    background-color: transparent;
+    font-size: 25px;
+}
+
+.container .left .picture .prev {
+    left: 6%;
+}
+
+.container .left .picture .next {
+    left: 88%;
+}
+
+.container .left .picture .list {
+    justify-content: center;
+}
+
+.container .left .picture .list .ele picture img {
+    padding:5px 5px 0;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    /* width: 100%; */
+    /* height: 100%; */
+}
+
+/*************reviews***************/
+.container .left .review {
+    margin-top: 10px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.container .left .review .title p {
+    font-weight: 500;
+}
+
+.container .left .review .title .star p {
+    font-weight: 700;
+}
+
+.container .left .review .title .star {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 2px;
+}
+
+.container .left .review .rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.container .left .review .rating button {
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(48, 50, 61);
+    color: white;
+}
+
+.container .left .review .rating .s {
+    background-color: #e2b028;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.container .left .review .comment .comment-rating {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+.container .left .review .comment .comment-rating .avatar {
+    width: 10%;
+}
+.container .left .review .comment .comment-rating .avatar img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.container .left .review .comment .comment-rating .info {
+    position: absolute;
+    display: grid;
+    gap: 5px;
+    left: 15%;
+}
+
+.container .left .review .comment .comment-rating .info .s {
+    display: flex;
+    gap: 2px;
+}
+
+
+
+.container .left .review .comment .comment-rating .day {
+    position: absolute;
+    right: 0;
+    color: rgb(165, 165, 165);
+}
+
+
+
+/*************right***************/
+.container .right {
+    width: 60%;
+}
+
+/*************detail***************/
+.container .right .detail {
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.container .right .detail .star {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    gap: 2px;
+}
+
+.container .right .detail .name-price {
+    padding: 5px 0;
+}
+
+.container .right .detail .name-price .name {
+    font-weight: 500;
+}
+
+.container .right .detail .name-price .price {
+    display: flex;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.container .right .detail .name-price .price .new{
+    
+}
+
+.container .right .detail .name-price .price .old{
+    color: rgb(230, 230, 230);
+    text-decoration: line-through;
+}
+
+.container .right .detail .button button {
+    border: 1px solid rgb(255, 120, 142);
+    background-color: transparent;
+    color: rgb(255, 120, 142);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.container .right .detail .button .buy {
+    background-color: rgb(255, 120, 142);
+    color: white;
+}
+
+.container .right .detail .button .heart {
+    padding: 10px;
+}
+
+.container .right .detail .button {
+    padding: 10px 0;
+}
+
+.container .right .detail .color .name {
+    display: flex;
+    padding: 20px 0 10px;
+}
+.container .right .detail .pick-color {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.container .right .detail .pick-color button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+}
+
+/* .container .right .detail .pick-color .red {
+    background-color: red;
+}
+
+.container .right .detail .pick-color .blue {
+    background-color: blue;
+}
+
+.container .right .detail .pick-color .green {
+    background-color: green;
+}
+
+.container .right .detail .pick-color .orange {
+    background-color: orange;
+} */
+
+.container .right .detail .time {
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+
+.container .right .detail .des .title {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.container .right .detail .des .content {
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.container .right .detail .character {
+    padding: 20px 0 10px;
+    display: grid;
+    gap: 5px;
+}
+
+.container .right .detail .character p {
+    font-weight: 300;
+    font-size: 12px;
+}
+
+.container .right .detail .character p i {
+    color: rgb(168, 168, 168);
+}
+
+.container .right .detail .store .title p {
+    font-weight: 500;
+    padding-bottom: 5px;
+}
+
+.container .right .detail .store .info {
+    display: flex;
+    gap: 10px;
+}
+.container .right .detail .store .info .image img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.container .right .detail .store .info .st {
+    display: grid;
+    
+}
+
+.container .right .detail .store .info .st .name-store {
+    font-size: 12px;
+}
+
+.container .right .detail .store .info .st .followers-store {
+    font-size: 12px;
+    color: rgb(225, 225, 225);
+}
+
+/*************product similar***************/
+
+.container .right .product-similar {
+    background-color: white;
+    margin: 10px 0 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+.container .right .product-similar .title-product-similar {
+    margin-bottom: 10px;
+}
+.container .right .product-similar .list {
+    display: flex;
+    gap: 2px;
+}
+.container .right .product-similar .list .product img {
+    width: 100%;
+
+} 
+
+.container .right .product-similar .list .product {
+    position: relative;
+    width: 20%;
+    padding: 2px;
+    padding-bottom: 25px;
+    border: 1px solid rgb(220, 220, 220);
+}
+
+.container .right .product-similar .list .product p {
+    position: absolute;
+    left: 5%;
+    bottom: 2%;
+}

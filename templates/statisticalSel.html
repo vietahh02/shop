@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css" />
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"
+    />
+    <link rel="stylesheet" href="/resources/demos/style.css" />
+
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css"
+    />
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script>
+      $(function () {
+        $("#datepicker1").datepicker({
+          dateFormat: "yy-mm-dd",
+        });
+        $("#datepicker2").datepicker({
+          dateFormat: "yy-mm-dd",
+        });
+      });
+    </script>
+    <style>
+        form {
+          display: flex;
+          gap: 10px;
+        }
+        #notification {
+            display: none;
+            position: fixed;
+            top: 45%;
+            left: 45%;
+            background-color: rgb(0,0,0,0.5);
+            max-width: 200px;
+            width: 100%;
+            max-height: 100px;
+            height: 100%;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 20px;
+        }
+    </style>
+  </head>
+  <body>
+
+    <div class="container1">
+      {{template "Header".}}
+    </div>
+
+    <div class="container">
+      <div class="back">
+        <a href="/homeSel" style="color: rgb(122, 122, 255);">Back to Home</a>
+      </div>
+      <form autocomplete="off">
+        <div class="col-md-2">
+          <p>
+            Từ ngày: <input type="text" id="datepicker1" class="form-control" />
+          </p>
+          <input
+            type="button"
+            id="btn-dashboard-filter"
+            class="btn btn-primary btn-sm"
+            value="Lọc kết quả"
+          />
+        </div>
+        <div class="col-md-2">
+          <p>
+            Đến ngày:
+            <input type="text" id="datepicker2" class="form-control" />
+          </p>
+        </div>
+
+        <div class="col-md-2">
+            <p>
+                Lọc theo:
+                <select class="dashboard-filter form-control">
+                    <option >--Chọn--</option>
+                    <option value="7">7 ngày qua</option>
+                    <option value="30">30 ngay qua</option>
+                    <option value="60">2 thang qua</option>
+                    <option value="365">Nam qua</option>
+                </select>
+            </p>
+        </div>
+
+        </form>
+        <h3>Doanh số bán hàng</h3>
+        <div
+          id="myfirstchart"
+          style="height: 250px"
+        ></div>
+        <p class="notification" id="notification" style="text-align: center;"></p>
+    </div>
+    <script>
+      const xml = new XMLHttpRequest();
+
+      $("#btn-dashboard-filter").click(function () {
+        form_date = $("#datepicker1").val();
+        to_date = $("#datepicker2").val();
+        if (to_date <= form_date) {
+          $("#notification").css("display", "block")
+          $("#notification").html("Date khong hop le")
+          setTimeout(function() {
+          $("#notification").css("display", "none")
+          $("#notification").html("")
+          },3000)
+          return
+        }
+        send(form_date, to_date)
+      });
+
+      function send (form_date, to_date) {
+        xml.open("POST", "/statistical?form=" + form_date + "&to=" + to_date);
+        xml.send();
+        xml.onload = function () {
+          if (xml.status === 200) {
+            $("#myfirstchart").html("");
+            const response = JSON.parse(xml.responseText);
+            console.log(response);
+            var chart = new Morris.Line({
+              element: "myfirstchart",
+              lineColors: ["#FF6541"],
+              barColors: ["#FF6541"],
+              data: response,
+              xkey: "period",
+              ykeys: ["value"],
+              labels: ["Quantity"],
+            });
+          } else {
+            console.error(xml.statusText);
+          }
+        };
+      }
+
+      function ha(day) {
+        xml.open("GET", "/stat30days?day="+day);
+        xml.send();
+        xml.onload = function () {
+          if (xml.status === 200) {
+            $("#myfirstchart").html("");
+            const response = JSON.parse(xml.responseText);
+            console.log(response);
+            var chart = new Morris.Line({
+              element: "myfirstchart",
+              lineColors: ["#FF6541"],
+              barColors: ["#FF6541"],
+              data: response,
+              xkey: "period",
+              ykeys: ["value"],
+              labels: ["Quantity"],
+            });
+          } else {
+            console.error(xml.statusText);
+          }
+        };
+      }
+
+      ha(30)
+
+      $(".dashboard-filter").change(function () {
+        ha($(this).val())
+      })
+    </script>
+
+  <div class="container1">
+    {{template "Footer".}}
+  </div>
+  </body>
+</html>

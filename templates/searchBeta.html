@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+    <link rel="stylesheet" href="../static/css/style_Beta.css">
+    <!-- <script src="../static/js/scriptBeta.js" defer></script> -->
+</head>
+<body>
+
+    <div class="container1">
+        {{template "Header".}}
+    </div>
+
+    <div class="container">
+        <div class="search-k">
+            <span>Sắp xếp theo</span>
+            <button number="1" sort="normal">Liên quan</button>
+            <button number="2" sort="time">Mới nhất</button>
+            <button number="3" sort="sold">Bán chạy</button>
+            <select name="price" id="price" >
+                <option value="0" style="display: none;">Giá: </option>
+                <option value="1">Giá từ thấp đến cao</option>
+                <option value="2">Giá từ cao đến thấp</option>
+            </select>
+        </div>
+
+        <div class="c-l">
+            <div class="check">
+                <div class="checkStar">
+                    <span>Xếp theo sao</span><br>
+                    <button number="1">
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-thin fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-thin fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-thin fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-thin fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <span>trở lên</span>
+                    </button><br>
+                    <button number="2">
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-thin fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-thin fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-thin fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <span>trở lên</span>
+                    </button><br>
+                    <button number="3">
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-thin fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-thin fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <span>trở lên</span>
+                    </button><br>
+                    <button number="4">
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-thin fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <span>trở lên</span>
+                    </button><br>
+                    <button number="5">
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                        <i class="fa-solid fa-star fa-2xs" style="color: #ffdd00;"></i>
+                    </button><br>
+                </div>
+                <hr>
+                <div class="checkPrice">
+                    <input type="number" placeholder="Từ..." id="min"><br><br>
+                    <input type="number" placeholder="Đến..." id="max"><br>
+                    <button>Áp dụng</button>
+                </div> 
+                <hr>
+                <div class="dele">
+                    <button>Delete Filter</button>
+                </div>
+            </div>
+            <div class="list-product">
+                {{range $i, $e := .ListProduct}}
+                <div class="product" im="{{$e.Id}}">
+                    <div class="img">
+                        <img src="{{$e.Image}}" alt="">
+                    </div>
+                    <div class="name">
+                        <span>{{$e.Name}}</span>
+                    </div>
+                    <div class="priceP">
+                        {{if $e.Discount}}
+                            <div class="priceOld">${{$e.Discount}}</div>
+                            <div class="priceNew">${{$e.Price}}</div>
+                        {{else}}
+                            <div class="priceNew">${{$e.Price}}</div>
+                        {{end}}
+                        
+                    </div>
+                    <div class="star">
+                        <script>
+                            starAll = "{{$e.Star}}";
+                            i=0
+                            for (;i<Math.floor(starAll);i++) {
+                            document.writeln("<i class=\"fa-solid fa-star\" style=\"color: #ffc808;\"></i>")
+                            }
+                            if (Math.floor(starAll)-starAll < 0) {
+                              document.writeln("<i class=\"fa-solid fa-star-half-stroke\" style=\"color: #ffc808;\"></i>")
+                              i++
+                            }
+                            for (;i<5;i++) {
+                              document.writeln("<i class=\"fa-regular fa-star\" style=\"color: #ffc808;\"></i>")
+                            }
+                          </script>
+                    </div>
+                </div>
+                {{end}}
+                
+            </div>
+        </div>
+        <p class="notification"></p>
+    </div>
+
+    <div class="container1">
+        {{template "Footer".}}
+    </div>
+
+    <script>
+
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log(urlParams)
+        
+        star = urlParams.get("star");
+        if (Number(star) > 0 && star) {
+            $(".checkStar button").eq(Number(star)-1).addClass("active");
+        }
+
+        sort = urlParams.get("sort")
+        or = urlParams.get("or");
+
+
+        if (or == null && sort != null) {
+            $(".search-k button").eq(Number(sort)-1).addClass("active");
+        }else if (or != null && sort != null) {
+            if (or == 1) {
+                $("#price").html(`<option value="0" style="display: none;">Giá từ thấp đến cao</option>
+                <option value="1">Giá từ thấp đến cao</option>
+                <option value="2">Giá từ cao đến thấp</option>`)
+            }else if (or == 2) {
+                $("#price").html(`<option value="0" style="display: none;">Giá từ cao đến thấp</option>
+                <option value="1">Giá từ thấp đến cao</option>
+                <option value="2">Giá từ cao đến thấp</option>`)
+            }
+        }else if (sort == null) {
+            $(".search-k button").eq(0).addClass("active");
+        }
+
+        sort = ""
+        or = ""
+
+        $(".search-k button").click(function () {
+            sort = $(this).attr("number");
+            goSearch()
+        })
+
+        $("#price").change(function () {
+            sort = "price"
+            or = $(this).val()
+            if (or != null && or != "" && or != "0") {
+                goSearch()
+            }
+        })
+
+        $(".dele button").click(function () {
+            location.href = "/searchBeta?key="+urlParams.get("key")+"#";
+        })
+
+        $(".checkStar button").click(function () {
+            star = $(this).attr("number")
+            goSearch()
+        })
+
+        function goSearch() {
+            search = "/searchBeta?key="+urlParams.get("key");
+            if (or != ""){
+                search += "&or="+or 
+            }
+            if (sort != "") {
+                search += "&sort="+sort
+            }
+            if (Number(star) > 0 && star != null) {
+                search += "&star="+star
+            }
+            if ($("#max").val() != "") {
+                search += "&maxPrice="+$("#max").val()
+            }
+            if ($("#min").val() != "") {
+                search += "&minPrice="+$("#min").val()
+            }
+            search += "#"
+            location.href = search
+        }
+    </script>
+
+    <script>
+        const maxPrice = urlParams.get("maxPrice");
+        const minPrice = urlParams.get("minPrice");
+        if (maxPrice) {
+            $("#max").val(maxPrice)
+        }
+        if ( minPrice) {
+            $("#min").val(minPrice)
+        }
+        $(".checkPrice button").click(function () {
+            if ($("#max").val() && $("#min").val()) {
+                if (parseFloat($("#max").val()) < parseFloat($("#min").val())) {
+                    $(".notification").css("display","block")
+                    $(".notification").html("Nhap ngu")
+                    setTimeout(function () {
+                        $(".notification").css("display","none")
+                        $(".notification").html("")
+                    },2000)
+                }else {
+                    goSearch()
+                }
+            }else if ($("#max").val() || $("#min").val()) {
+                goSearch()
+            }else {
+                $(".notification").css("display","block")
+                $(".notification").html("Nhap de")
+                setTimeout(function () {
+                    $(".notification").css("display","none")
+                    $(".notification").html("")
+                },2000)
+            }
+        })
+    </script>
+
+    <script>
+        
+        document.querySelector("input[type=number]").addEventListener("input", validateNumber);
+        function validateNumber(input) {
+            console.log(input);
+            if (!isNaN(input.value)) {
+                if (input.value > 0) {
+                return true;
+                } else {
+                input.value = "";
+                return false;
+                }
+            } else {
+                input.value = "";
+                return false;
+            }
+        }
+
+        $(".product").click(function () {
+            location.href = "/detailProduct?id="+$(this).attr("im")
+        })
+
+    </script>
+</body>
+</html>

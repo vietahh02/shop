@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+    <link rel="stylesheet" href="../static/css/style_Beta.css">
+    <script src="../static/js/scriptBeta.js" defer></script>
+    <style>
+        body {
+            background-color: #f3f3f3;
+        }
+        .container  {
+            background-color: white;
+            padding: 40px !important;
+            margin: 20px auto !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container1">
+        {{template "Header".}}
+    </div>
+
+    <div class="container">
+        <div class="profile">
+            <h4>Hồ sơ của tôi</h4> 
+            <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+        </div>
+        <hr>
+        <form action="#" method="post" enctype="multipart/form-data">
+
+        {{if .}}
+        <div class="info">
+            <label for="userName">
+                <span>Tên đăng nhập</span>
+                <input type="text" id="userName" name="userName" value="{{.I.UserName}}">
+            </label><br>
+            <label for="name">
+                <span>Tên đầy đủ</span>
+                <input type="text" id="name" name="name" value="{{.I.FullName}}">
+            </label><br>
+            <label for="email">
+                <span>Email</span>
+                <input type="email" id="email" name="email" value="{{.I.Email}}">
+            </label><br>
+            <label for="phone">
+                <span>Số điện thoại</span>
+                <input type="number" id="phone" name="phone" value="{{.I.PhoneNumber}}">
+            </label><br>
+            <label for="gender">
+                <span>Giới tính</span>
+                <div class="ne" style="display: flex;align-items: center;gap: 10px;">
+                    <input type="radio" name="gender" value="1"> Nam
+                    <input type="radio" name="gender" value="2"> Nữ
+                    <input type="radio" name="gender" value="3"> Khác
+                </div>
+
+                <script>
+                    const gender = document.getElementsByName('gender');
+                    for (let i = 0; i < gender.length; i++) {
+                        if (gender[i].value == '{{.I.Gender}}') {
+                            gender[i].setAttribute('checked', 'checked');
+                        }
+                    }
+                </script>
+
+            </label><br>
+            <label for="birth">
+                <span>Ngày sinh</span>
+                <input type="date" name="birth" id="bi" value="{{.I.BirthDay}}">
+            </label>
+            <button>Lưu</button>
+        </div>
+        <div class="avatar">
+            <label for="file">
+                {{if .I.Image}}
+                    <img src="{{.I.Image}}" alt="" id="img">
+                {{else}}
+                    <img src="../static/image/1802012605.jpg" alt="" id="img">
+                {{end}}  <br>
+                <p style="background: #f3f3f3; padding: 5px 10px; ">Chọn ảnh</p> 
+            </label>
+
+            <input type="file" id="file" class="none">
+            <input type="text" id="checkImg" class="none">
+        </div>
+        {{end}}
+        </form>
+    </div>
+
+    <div class="container1">
+        {{template "Footer".}}
+    </div>
+
+    <script>
+        $("#bi").change(function () {
+            console.log($(this).val());
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../static/js/script.js"></script>
+    <script src="../static/js/script2.js" defer></script>
+    <script src="https://kit.fontawesome.com/9694815f86.js" crossorigin="anonymous"></script>
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+      />
+     <link rel="stylesheet" href="../static/css/style.css" /> 
+  </head>
+  <body>
+  <div class="container">
+    {{template "Header".}}
+    <div class="body-header">
+      <div class="body-header-cate">
+        {{range $i, $e := .ListCate}}
+        <div class="category">
+          <i class="fa-regular fa-circle-play" style="color: #a6a6a6;"></i>
+          <a href="#">{{$e.NameCate}}</a>
+        </div>
+        {{if eq $i 8}}{{break}}{{end}}
+        <div class="line"></div>
+        {{end}}
+      </div>
+      <div class="banner">
+        <div class="list-banner">
+          {{if .ListBanner}}
+              {{range .ListBanner}}
+          <div><img src="{{.Image}}" alt="" /></div>
+              {{end}}
+          {{end}}
+        </div>
+        <div><button>SHOP NOW</button></div>
+        <div class="runText">
+          <div class="footer-banner">
+            {{if .ListFB}}
+              {{range .ListFB}}
+                <div class="run">
+                  <h4>{{.Title}}</h4>
+                  <p>{{.Content}}</p>
+                </div>
+              {{end}}
+            {{end}}
+          
+        </div>
+
+          <script>
+
+            s = document.querySelectorAll(".run")
+            g= s.length
+            var h = document.querySelector(".footer-banner")
+            if (g >3) {
+              h.style.width = g * 230 + "px"
+              h.style.animation =  "runText "+ g*4+ "s" +" linear infinite";
+            }
+            
+          </script>
+
+        </div>
+        
+      </div>
+    </div>
+    <div class="deal-product">
+      <div class="deal chan">
+        <div class="hot">
+          <div><h3>HOT DEALS</h3></div>
+        </div>
+        <div class="line"></div>
+        <div class="list-hot-deal">
+          {{range .Deals}}
+          <a href="/detailProduct?id={{.Id}}#" class="hot-deal">
+          <div class="img-deal">
+            <img src="{{.Image}}" alt="">
+          </div>
+          <div class="info-img">
+            <div class="name-img">
+              {{.Name}}
+            </div>
+            <div class="price">
+              {{if eq .Price .Discount}}
+              <p class="new-price">${{.Price}}</p>
+              {{else}}
+              <p class="old-price">${{.Price}}</p>
+              <p class="new-price">${{.Discount}}</p>
+              {{end}}
+            </div>
+            <div class="star">
+              <script>
+                starAll = "{{.Star}}";
+                i=0
+                for (;i<Math.floor(starAll);i++) {
+                document.writeln("<i class=\"fa-solid fa-star\" style=\"color: #ffc808;\"></i>")
+              }
+              if (Math.floor(starAll)-starAll < 0) {
+                document.writeln("<i class=\"fa-solid fa-star-half-stroke\" style=\"color: #ffc808;\"></i>")
+                i++
+              }
+              for (;i<5;i++) {
+                document.writeln("<i class=\"fa-regular fa-star\" style=\"color: #ffc808;\"></i>")
+              }
+              </script>
+            </div>
+          </div>
+        </a>
+        {{end}}
+        </div> 
+      </div>
+      <div class="product chan">
+        <div class="new">
+          <div><h3>NEW PRODUCTS</h3></div>
+          <div>
+            <p>All</p>
+            <p>Clothing</p>
+            <p>Electronics</p>
+            <p>Shoes</p>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="list-product">
+          {{range .News}}
+          <div class="new-product">
+            <div class="img-product">
+              <img src="{{.Image}}" alt="">
+            </div>
+            <div class="info-img">
+              <div class="name-img">
+                {{.Name}}
+              </div>
+              <div class="price">
+                {{if eq .Price .Discount}}
+                <p class="new-price">${{.Price}}</p>
+                {{else}}
+                <p class="old-price">${{.Price}}</p>
+                <p class="new-price">${{.Discount}}</p>
+                {{end}}
+              </div>
+              <div class="star">
+                <script>
+                  starAll = "{{.Star}}";
+                  i=0
+                  for (;i<Math.floor(starAll);i++) {
+                  document.writeln("<i class=\"fa-solid fa-star\" style=\"color: #ffc808;\"></i>")
+                  }
+                  if (Math.floor(starAll)-starAll < 0) {
+                    document.writeln("<i class=\"fa-solid fa-star-half-stroke\" style=\"color: #ffc808;\"></i>")
+                    i++
+                  }
+                  for (;i<5;i++) {
+                    document.writeln("<i class=\"fa-regular fa-star\" style=\"color: #ffc808;\"></i>")
+                  }
+                </script>
+              </div>
+            </div>
+          </div>
+          {{end}}
+          </div>
+        </div>
+    </div>
+    <div class="body">
+      <div class="body-left">
+        <div class="deal">
+          <div class="special">
+            <div><h3>SPECIAL DEAL</h3></div>
+          </div>
+          <div class="line"></div>
+          <div class="list-special-deal">
+            {{range .Specials}}
+            <div class="special-deal">
+            <div class="img-deal">
+              <img src="{{.Image}}" alt="">
+            </div>
+            <div class="info-img">
+              <div class="name-img">
+                {{.Name}}
+              </div>
+              <div class="price">
+                <p class="old-price">$100.00</p>
+                <p class="new-price">$90.00</p>
+              </div>
+              <div class="star">
+                <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                <i class="fa-regular fa-star" style="color: #ffc808;"></i>
+              </div>
+            </div>
+            </div>
+            {{end}}
+          </div>
+          
+        </div>
+        <div class="new-letter">
+          <div class="newsletters">
+            <div><h3>NEWSLETTERS</h3></div>
+          </div>
+          <div class="line"></div>
+          <div class="letter">
+            <div><p>Sign Up for Our Newsletter!</p></div>
+            <form action="#">
+              <input type="text"><br>
+              <input type="submit" value="SUBSCRIBE">
+            </form>
+          </div>
+        </div>
+        <div class="banner-space">
+          <img src="../static/img/banner-space.png" alt="">
+        </div>
+      </div>
+      <div class="body-right">
+        <div class="banner-sale">
+          <div class="sale">
+            <img src="../static/img/banner01.png" alt="">
+            <a href="#" class="one">BUY NOW</a>
+          </div>
+          <div class="sale">
+            <img src="../static/img/banner02.png" alt="">
+            <a href="#" class="two">BUY NOW</a>
+          </div>
+        </div>
+        <div class="product">
+        <div class="late">
+          <div><h3>LATEST PRODUCTS</h3></div>
+          <div>
+            <p>All</p>
+            <p>Clothing</p>
+            <p>Electronics</p>
+            <p>Shoes</p>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="list-product-late">
+          {{range .Latests}}
+          <div class="late-product">
+            <div class="img-product">
+              <img src="{{.Image}}" alt="">
+            </div>
+            <div class="info-img">
+              <div class="name-img">
+                {{.Name}}
+              </div>
+              <div class="price">
+                {{if eq .Price .Discount}}
+                <p class="new-price">${{.Price}}</p>
+                {{else}}
+                <p class="old-price">${{.Price}}</p>
+                <p class="new-price">${{.Discount}}</p>
+                {{end}}
+              </div>
+              <div class="star">
+                <script>
+                  starAll = "{{.Star}}";
+                  i=0
+                  for (;i<Math.floor(starAll);i++) {
+                  document.writeln("<i class=\"fa-solid fa-star\" style=\"color: #ffc808;\"></i>")
+                }
+                if (Math.floor(starAll)-starAll < 0) {
+                  document.writeln("<i class=\"fa-solid fa-star-half-stroke\" style=\"color: #ffc808;\"></i>")
+                  i++
+                }
+                for (;i<5;i++) {
+                  document.writeln("<i class=\"fa-regular fa-star\" style=\"color: #ffc808;\"></i>")
+                }
+                </script>
+              </div>
+            </div>
+          </div>
+          {{end}}
+        </div>
+        </div>
+        <div class="laptop">
+          <div class="img-laptop">
+            <img src="../static/img/laptop.png" alt="">
+          </div>
+          <div class="info-laptop">
+            <h3>BEAUTIFUL LAPTOP</h3>
+            <p>RETINA DISPLAY 18" READY !</p>
+            <button>SHOP NOW</button>
+          </div>
+        </div>
+        <div class="feature-product">
+          <div class="feature">
+            <div><h3>FEATURE PRODUCTS</h3></div>
+          </div>
+          <div class="line"></div>
+          <script>ih=0</script>
+          <div class="list-product-feature">
+
+            {{range $i, $e := .ListPro}}
+            
+            <script style="display: none;">
+              k = "{{$i}}";
+              ih++;
+              if (k%2 == 0) {
+                document.writeln("<div class=\"feature-product-s\">")
+              }
+              </script>
+              <div class="feature-product-al">
+                <div class="img-product">
+                  <img src="{{.Image}}" alt="">
+                </div>
+                <div class="info-img">
+                  <div class="name-img">
+                    {{.Name}}
+                  </div>
+                  <div class="price">
+                    {{if eq .Price .Discount}}
+                    <p class="new-price">${{.Price}}</p>
+                    {{else}}
+                    <p class="old-price">${{.Price}}</p>
+                    <p class="new-price">${{.Discount}}</p>
+                    {{end}}
+                  </div>
+                  <div class="star">
+                    <script>
+                      starAll = "{{.Star}}";
+                      i=0
+                      for (;i<Math.floor(starAll);i++) {
+                      document.writeln("<i class=\"fa-solid fa-star\" style=\"color: #ffc808;\"></i>")
+                    }
+                    if (Math.floor(starAll)-starAll < 0) {
+                      document.writeln("<i class=\"fa-solid fa-star-half-stroke\" style=\"color: #ffc808;\"></i>")
+                      i++
+                    }
+                    for (;i<5;i++) {
+                      document.writeln("<i class=\"fa-regular fa-star\" style=\"color: #ffc808;\"></i>")
+                    }
+                    </script>
+                  </div>
+                </div>
+              </div> 
+              <script>
+              
+              if (k%2 == 1){
+                document.writeln(`</div>`)
+              }
+
+
+            </script>
+    
+            {{end}}
+            <script style="display: none;">if(ih%2!=0){document.writeln("</div>")}</script>
+            
+            <!-- <div class="feature-product-s">
+              <div class="feature-product-al">
+                <div class="img-product">
+                  <img src="../static/img/feature1.png" alt="">
+                </div>
+                <div class="info-img">
+                  <div class="name-img">
+                    Lorem, ipsum dolor.
+                  </div>
+                  <div class="price">
+                    <p class="old-price">$100.00</p>
+                    <p class="new-price">$90.00</p>
+                  </div>
+                  <div class="star">
+                    <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                    <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                    <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                    <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                    <i class="fa-regular fa-star" style="color: #ffc808;"></i>
+                  </div>
+                </div>
+              </div> 
+              <div class="feature-product-al">
+                <div class="img-product">
+                  <img src="../static/img/feature2.png" alt="">
+                </div>
+                <div class="info-img">
+                  <div class="name-img">
+                    Lorem, ipsum dolor.
+                  </div>
+                  <div class="price">
+                    <p class="old-price">$100.00</p>
+                    <p class="new-price">$90.00</p>
+                  </div>
+                  <div class="star">
+                    <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                    <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                    <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                    <i class="fa-solid fa-star" style="color: #ffc808;"></i>
+                    <i class="fa-regular fa-star" style="color: #ffc808;"></i>
+                  </div>
+                </div>
+              </div> 
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="body-footer">
+      <img src="../static/img/brand.png" alt="">
+    </div> -->
+    {{template "Footer".}}
+  </div>
+
+
+  <script
+    type="text/javascript"
+    src="https://code.jquery.com/jquery-1.11.0.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
+  ></script>
+  <script src="../static/js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../static/bootstrap/js/bootstrap.min.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="../static/css/style_cart.css" />
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+    <!-- <script src="bignumber.js"></script> -->
+
+    <style>
+      textarea {
+        width: 100%;
+        padding: 5px;
+        min-height: 150px;
+        max-height: 150px;
+      }
+    </style>
+    <script>
+      const xhttp = new XMLHttpRequest();
+    </script>
+  </head>
+  <body>
+    <div class="container1">
+      {{template "Header".}}
+    </div>
+    <div class="container">
+      <div class="info-cart">
+
+        <div class="info">
+          <div class="choose ">
+                <button class="b active" id="cart" >1.Your cart</button>
+                <button class="b" id="add">2.Address & Delivery</button>
+                <button class="b" id="pay">3.Payment method</button>
+                <button class="b" id="sum">4.Summary</button>
+            </div>
+            
+            <div class="cart" >
+              <div class="c list-product" id="cart1" >
+                {{if .ListCart}}
+                {{range $i, $e := .ListCart}}
+                  <div class="product">
+                      <div class="image-name">
+                        <div class="image">
+                          <img src="{{$e.P.Image}}" alt="">
+                        </div>
+                        <div class="name">
+                          <h5>{{$e.P.Name}}</h5>
+                          <p>Levi's</p>
+                          <p>Size: 14 Color: {{$e.Co.ColorUrl}}</p>
+                          <div class="number-input">
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" number="{{$i}}" class="b-pre" ></button>
+                            <input class="quantity" min="0" value="{{$e.Ca.Amount}}" type="number" number="{{$i}}" pattern="[0-9]" maxlength="10">
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" number="{{$i}}" class="b-next plus"></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="price">
+                        {{if $e.P.Discount}}
+                        <h6 style="text-decoration: line-through;color: rgb(229, 229, 229);">{{$e.P.Price}}</h6>
+                        <h6 class="new-price"></h6>
+                        <script>
+                          n1 = "{{$e.P.Discount}}"
+                          n2 = "{{$e.Co.Discount}}"
+                          p = "{{$e.P.Price}}"
+                          np = document.getElementsByClassName("new-price")
+                          if (n2 === "") {
+                            n2 = 0
+                          }
+                          np[np.length -1].innerHTML = (parseFloat(p) - parseFloat(p) * (parseFloat(n1) + parseFloat(n2)));
+                        </script>
+                        {{else if $e.Co.Discount}}
+                          <h6 style="text-decoration: line-through;color: rgb(229, 229, 229);">{{$e.P.Price}}</h6>
+                          <h6 class="new-price"></h6>
+                          <script>
+                            n1 = "{{$e.P.Discount}}"
+                            n2 = "{{$e.Co.Discount}}"
+                            p = "{{$e.P.Price}}"
+                            amount = "{{$e.Ca.Amount}}"
+                            np = document.getElementsByClassName("new-price")
+                            np[np.length -1].innerHTML = (parseFloat(p) - parseFloat(p) * (parseFloat(n1) + parseFloat(n2)));
+                          </script>
+                        {{else}}
+                          <h6 class="new-price">{{$e.P.Price}}</h6>
+                        {{end}}
+                        <p><i class="fa-regular fa-heart fa-xs"></i> <span>Follow this product</span></p>
+                        <p class="delete_cart" style="cursor: pointer;" number="{{$i}}"><i class="fa-regular fa-trash-can fa-xs"></i><span>Delete</span> </p>
+
+                      </div>
+                      
+                  </div>
+                    <hr class="hr">
+
+                {{end}}  
+                {{else}}
+                <p>empty</p>
+                  {{end}}
+
+              </div>
+              
+              <form action="/buy" method="get" id="buy-submit" >
+              <div class="c address-delivery" id="add1" style="display: none;" >
+                <table>
+                  <tr>
+                    <td>Your Name </td>
+                    <td><input type="text" id="name" name="name" placeholder="Enter your name" autocomplete="off"></td>
+                  </tr>
+                  <tr>
+                    <td>Address</td>
+                    <td><input type="text" readonly id="address" name="address" autocomplete="off" style="cursor: not-allowed;" placeholder="Choose your address" ></td>
+                  </tr>
+                  <tr>
+                    <td>City, Province</td>
+                    <td>
+                      <select id="city">
+                        <option value="" style="color: rgb(180, 180, 180);">None</option>
+                        {{range .ListProvince}}
+                          <option class="c-city" value="{{.Code}}">{{.Name}}</option>
+                        {{end}}
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>District</td>
+                    <td>
+                      <select id="dis">
+                        <option value="" style="color: rgb(180, 180, 180);">None</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr id="war1">
+                    <td>Ward</td>
+                    <td>
+                      <select id="war">
+                        <option value="" style="color: rgb(180, 180, 180);">None</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="s-address">Specific Address</label></td>
+                    <td>
+                      <input type="text" name="s-address" id="s-address" placeholder="Enter your address" autocomplete="off" >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label for="phone">Phone</label></td>
+                    <td>
+                      <input type="number" name="phone" id="phone" autocomplete="off" placeholder="Enter your phone number" maxlength="10" custom-input>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Delivery</td>
+                    <td>
+                      {{range $i, $e := .ListDel}}
+                      <label for="d{{$i}}">
+                        <input type="radio" name="delivery" id="d{{$i}}" class="form-check-input delivery" value="{{$e.Id}}">&nbsp; {{$e.Name}}
+                      </label><br>
+                      {{end}}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="c payment" id="pay1" style="display: none;" >
+                <h4>Payment</h4>
+                {{range $i, $e := .ListPay}}
+                <label for="p{{$i}}">
+                  <input type="radio" id="p{{$i}}" name="ra-payment" value="{{.Id}}" class="form-check-input ra-payment" >&nbsp; {{.Name}}
+                </label><br>
+                {{end}}
+              </div>
+              </form>
+              <div class="c summary" id="sum1" style="display: none;" >
+                <table>
+                  <tr>
+                    <td><p>Your Name</p></td>
+                    <td>
+                      <p class="sum-name" id="sum-name"><span style="color: rgb(180, 180, 180);">none</span></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p>Address</p>
+                    </td>
+                    <td>
+                      <p class="sum-address" id="sum-address"><span style="color: rgb(180, 180, 180);">none</span></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Specific Address</td>
+                    <td class="sum-s-address" id="sum-s-address"><span style="color: rgb(180, 180, 180);">none</span></td>
+                  </tr>
+                  <tr>
+                    <td><p>Phone</p></td>
+                    <td>
+                      <p id="sum-phone"><span style="color: rgb(180, 180, 180);">none</span></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label>Products</label></td>
+                    <td>
+                      <div class="list-pro" id="list-pro">
+                        <div class="product1">
+                          <img src="../static/img/1314533660.jpg" alt="">
+                          <div class="info-pro">
+                            <div class="name-sty">
+                              <div class="name">house</div>
+                              <div class="sty">color: red</div>
+                            </div>
+                            <div class="price-amount">
+                              <div class="price">$3000</div>
+                              <div class="amount">x3</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><p>Delivery</p></td>
+                    <td><p id="sum-delivery"><span style="color: rgb(180, 180, 180);">none</span></p></td>
+                  </tr>
+                  <tr>
+                    <td><p>Payment</p></td>
+                    <td>
+                      <p id="sum-payment"><span style="color: rgb(180, 180, 180);">none</span></p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              
+            </div>
+            
+        </div>
+
+        <div class="total">
+            <h5>TOTAL</h5>
+            <div class="subtotal d-flex">
+              <p>Subtotal</p>
+              <p id="total-price1">$284.82</p>
+              <script>
+                np = document.getElementsByClassName("new-price")
+                qua = document.getElementsByClassName("quantity")
+                var tot = 0
+                for (let i = 0; i < np.length; i++) {
+                  tot = tot + parseFloat(np[i].innerHTML) * parseFloat(qua[i].value)
+                }
+                document.getElementById('total-price1').innerHTML = tot.toFixed(2)
+              </script>
+            </div>
+            <div class="delivery d-flex">
+              <p>Delivery</p>
+              <p>from $0.00 <i class="fa-regular fa-circle-exclamation fa-xs"></i></p>
+            </div>
+            <hr>
+            <h6>Total (VAT include no)</h6>
+            <button type="button" class="buy-all" id="buy-all" >NEXT</button><br>
+            <span>Have a promotion code?</span>
+        </div>
+        <p class="notification" id="notification" style="text-align: center;"></p>
+
+
+        <script> //delete product
+
+          const de = document.getElementsByClassName("delete_cart");
+          const product = document.getElementsByClassName("product")
+          const hr = document.getElementsByClassName("hr")
+
+          $(".delete_cart").click(function() {
+            console.log($(this).attr("number"));
+            $(".product").eq($(this).attr("number")).remove();
+            $(".hr").eq($(this).attr("number")).remove();
+            res()
+            if (product.length < 1) {
+              $("#cart1").html("<p>empty</p>")
+            }
+
+            xhttp.open("GET","deleteCart?index="+$(this).attr("number")+"#")
+            xhttp.send()
+
+          });
+
+          function res() {
+            for (var i = 0; i <de.length;i++) {
+              $(".delete_cart").eq(i).attr("number", i);
+              $(".b-pre").eq(i).attr("number", i);
+              $(".b-next").eq(i).attr("number", i);
+
+            }
+          }
+          
+        </script>
+
+        <script> //check var
+
+          const phone = document.getElementById("phone")
+
+          phone.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+          });
+
+          $("#name").change(function(){
+            $("#sum-name").html($("#name").val())
+          })
+          $("#s-address").change(function(){
+            $("#sum-s-address").html($("#s-address").val())
+          })
+          $("#phone").change(function(){
+            $("#sum-phone").html($("#phone").val())
+          });
+          $(".delivery").click(function(){
+            $("#sum-delivery").html($(this).val())
+          })
+          $(".ra-payment").click(function(){
+            $("#sum-payment").html($(this).val())
+          })
+        </script>
+
+        <script> //update products
+          let jsonData 
+          const listPro = document.getElementById("list-pro")
+          const xm = new XMLHttpRequest();
+          function resData() {
+            xm.open("GET", "/jc");
+            xm.onload = function() {
+              jsonData = JSON.parse(xm.responseText);
+              console.log(jsonData);
+              listPro.innerHTML = ""
+              if (jsonData.ListCart != null) {
+                addProduct()
+              }
+            }
+            xm.send();  
+          }
+
+          resData()
+          
+          function addProduct() {
+
+            for (var i = 0; i < jsonData.ListCart.length; i++) {
+              const product1 = document.createElement('div')
+              product1.className = "product1"
+              const cImg = document.createElement('img')
+              cImg.src = jsonData.ListCart[i].P.image
+              const cNameSty = document.createElement('div') 
+              cNameSty.className = "name-sty"
+
+              const cName = document.createElement('div') 
+              cName.className = "name"
+              cName.innerHTML = jsonData.ListCart[i].P.name
+              cNameSty.appendChild(cName)
+
+              if (jsonData.ListCart[i].Co.color_url!="") {
+                const cSty = document.createElement('div') 
+                cSty.className = "sty"
+                cSty.innerHTML = "color: red"
+                cNameSty.appendChild(cSty)
+              }
+              
+              const cPriceAmount = document.createElement('div')
+              cPriceAmount.className = "price-amount"
+              const cPrice = document.createElement('div') 
+              cPrice.className = "price"
+              cPrice.innerHTML = (jsonData.ListCart[i].Ca.amount * (jsonData.ListCart[i].P.price - jsonData.ListCart[i].P.price * jsonData.ListCart[i].P.discount - jsonData.ListCart[i].P.price * jsonData.ListCart[i].Co.discount)).toFixed(2)
+              const cAmount = document.createElement('div') 
+              cAmount.className = "amount"
+              cAmount.innerHTML = "x" + jsonData.ListCart[i].Ca.amount
+              cPriceAmount.appendChild(cPrice)
+              cPriceAmount.appendChild(cAmount)
+
+              product1.appendChild(cImg)
+              const infoPro = document.createElement('div')
+              infoPro.className = "info-pro"
+
+              infoPro.appendChild(cNameSty)
+              infoPro.appendChild(cPriceAmount)
+              product1.appendChild(infoPro)
+
+              listPro.appendChild(product1)
+            }
+            
+          }
+          
+
+        </script>
+
+        <script> //Next and buy
+          const buttons = document.querySelectorAll(".b");
+
+          function getCookie(name) {
+          const cookies = document.cookie.split(';');
+          for (const cookie of cookies) {
+            const [key, value] = cookie.split('=');
+            if (key === name) {
+              return value;
+            }
+          }
+          return null;
+          }
+
+           now = 0
+          
+          if (getCookie("acc") == null ) {
+            $(".b").css("cursor", "no-drop")
+          }else {
+            buttons.forEach((button, index) => {
+              button.addEventListener("click", () => {
+                $(".b").eq(now).removeClass("active")
+                $(".c").eq(now).css("display", "none")
+                now = index;
+                $(".c").eq(now).css("display", "block")
+                res();
+                button.classList.add("active");
+                $("#buy-all").html("NEXT");
+                if (index == buttons.length - 1) {
+                  $("#buy-all").html("GO TO BUY");
+                }
+              });
+            });
+          }
+          
+
+
+          const ra_del = document.querySelectorAll("input[type='radio'][name='delivery']")
+          countDel = 0
+          const ra_pay = document.querySelectorAll("input[type='radio'][name='ra-payment']")
+          countPay = 0 
+
+          function count() {
+            for (const radio of ra_del) {
+              if (radio.checked) {
+                countDel++;
+                break;
+              }
+            }
+            for (const radio of ra_pay) {
+              if (radio.checked) {
+                countPay++;
+                break;
+              }
+            }
+          }
+
+          
+
+
+          if (getCookie('guest') != null) {
+
+          $("#buy-all").html("Login to buy all")
+          $("#buy-all").click(function () {
+            location.href = '/loginCus'
+          })
+
+          } else if (document.getElementsByClassName("product").length < 1) {
+
+            $("#buy-all").html("Add a product")
+            $("#buy-all").click(function () {
+              location.href = '/home'
+            })
+
+          } else {
+
+          $("#buy-all").click(function () {
+            if (now < buttons.length - 1) {
+              res();
+              $(".b").eq(now).removeClass("active")
+              $(".c").eq(now).css("display", "none")
+              now = parseInt(now) + 1;
+              $(".b").eq(now).addClass("active");
+              $(".c").eq(now).css("display", "block")
+              console.log(now)
+              if (now == buttons.length - 1) {
+                $(this).html("GO TO BUY");
+              }
+            }else {
+              count()
+
+              if (jsonData.ListCart == null) {
+                $("#notification").css("display", "block")
+                $("#notification").html("Cart is empty")
+                setTimeout(function() {
+                  $("#notification").css("display", "none")
+                  $("#notification").html("")
+                },3000)
+                return
+              }
+
+              if ($("#name").val() == "" || $("#address").val() == "" || $("#phone").val() == "") {
+                $("#buy-all").html("Next")
+                now = 1
+                $(".b").eq(3).removeClass("active")
+                $(".b").eq(1).addClass("active")
+                $(".c").eq(3).css("display", "none")
+                $(".c").eq(1).css("display", "block")
+                $("#notification").css("display", "block")
+                $("#notification").html("Enter your information")
+                setTimeout(function() {
+                  $("#notification").html("")
+                $("#notification").css("display", "none")
+                },3000)
+                return
+              }else if (countDel < 1) {
+                $("#buy-all").html("Next")
+                now = 1
+                $(".b").eq(3).removeClass("active")
+                $(".b").eq(1).addClass("active")
+                $(".c").eq(3).css("display", "none")
+                $(".c").eq(1).css("display", "block")
+                $("#notification").css("display", "block")
+                $("#notification").html("Choose Delivery")
+                setTimeout(function() {
+                  $("#notification").css("display", "none")
+                  $("#notification").html("")
+                },3000)
+                return
+              }else if (countPay < 1) {
+                $("#buy-all").html("Next")
+                now = 2
+                $(".b").eq(3).removeClass("active")
+                $(".b").eq(2).addClass("active")
+                $(".c").eq(3).css("display", "none")
+                $(".c").eq(2).css("display", "block")
+                $("#notification").css("display", "block")
+                $("#notification").html("Choose Payment")
+                setTimeout(function() {
+                  $("#notification").css("display", "none")
+                  $("#notification").html("")
+                },3000)
+                return
+              }else {
+                const form = document.getElementById('buy-submit');
+                form.submit();
+              }
+            }
+          });
+
+          }
+        </script>
+
+        <script> //-+
+        
+          const request = new XMLHttpRequest();
+
+          $(".quantity").keyup(function () {
+
+            if ($(this).val() == "" || $(this).val() < 1 || $(this).val() > 500) {
+              $(this).val(1);
+            }
+            n = $(this).attr("number")
+            console.log($(this).attr("number"))
+            xhttp.onreadystatechange = function() {
+              if (xhttp.readyState == 4 && xhttp.status == 200) {
+
+                json = JSON.parse(xhttp.responseText);
+                if (Number($(this).val()) > Number(json)) {
+                  $(".quantity").eq(n).val(json);
+                  $("#notification").css("display", "block")
+                  $("#notification").html("Maximum quantity is " + json)
+                  setTimeout(function() {
+                  $("#notification").css("display", "none")
+                  $("#notification").html("")
+                  },3000)
+                }
+                
+                request.open("GET", "/jc");
+                request.onload = function() {
+                  jsonData = JSON.parse(request.responseText);
+                  total = 0
+                  for (var i = 0; i < jsonData.ListCart.length;i++) {
+                    total = total + jsonData.ListCart[i].Ca.amount * (jsonData.ListCart[i].P.price - jsonData.ListCart[i].P.price * jsonData.ListCart[i].P.discount - jsonData.ListCart[i].P.price * jsonData.ListCart[i].Co.discount)
+                  }
+                  $("#total-price1").html(total.toFixed(2));
+                  resData();
+                }
+                request.send();
+              }
+            };
+            if (getCookie("acc")!= null) {
+              xhttp.open("GET","/pn?index="+$(this).attr("number")+"&am="+$(this).val()+"#");
+            }else {
+              xhttp.open("GET","/png?index="+$(this).attr("number")+"&am="+$(this).val()+"#");
+            }
+            
+            xhttp.send();
+          })
+
+          $(".b-pre").click(function() {
+            x = $(".new-price").eq($(this).attr("number")).html()
+            if ($(".quantity").eq($(this).attr("number")).val() < 1 ) {
+              $(".quantity").eq($(this).attr("number")).val(1)
+              resData()
+              return
+            }
+            $("#total-price1").html((parseFloat($("#total-price1").html()) - parseFloat(x)).toFixed(2))
+            if (getCookie("acc")!= null) {
+              xhttp.open("GET","/pn?index="+$(this).attr("number")+"&am="+$(".quantity").eq($(this).attr("number")).val()+"#")
+            }else {
+              xhttp.open("GET","/png?index="+$(this).attr("number")+"&am="+$(".quantity").eq($(this).attr("number")).val()+"#")
+            }
+            xhttp.onload = function() {
+              resData()
+            }
+            xhttp.send()
+            
+          })
+
+          $(".b-next").click(function() {
+            n = $(this).attr("number")
+            if (getCookie("acc")!= null) {
+              xhttp.open("GET","/pn?index="+$(this).attr("number")+"&am="+$(".quantity").eq($(this).attr("number")).val()+"#")
+            }else {
+              xhttp.open("GET","/png?index="+$(this).attr("number")+"&am="+$(".quantity").eq($(this).attr("number")).val()+"#")
+            }
+            xhttp.onload = function() {
+              if (xhttp.readyState == 4 && xhttp.status == 200) {
+                  json = JSON.parse(xhttp.responseText);
+                if (Number($(".quantity").eq(n).val()) > Number(json)) {
+                  $(".quantity").eq(n).val(json)
+                  $("#notification").css("display", "block")
+                  $("#notification").html("Maximum quantity is " + json)
+                  setTimeout(function() {
+                  $("#notification").css("display", "none")
+                  $("#notification").html("")
+                  },3000)
+                }else {
+                  console.log($(".new-price").eq(n).html())
+                  x = $(".new-price").eq(n).html()
+                  $("#total-price1").html((parseFloat($("#total-price1").html()) + parseFloat(x)).toFixed(2))
+                }
+              }
+                resData()
+            }
+            xhttp.send()
+          })
+          
+        </script>
+        
+        <script> //thanh pho, tinh thanh
+          
+          $("#city").change(function() {
+            x = $("#city option[value=\""+$(this).val()+"\"]").html()
+            code = $(this).val()
+              if ($(this).val() === "") {
+                document.getElementById("dis").innerHTML = `<option value="">None</option>`
+                document.getElementById("war").innerHTML = `<option value="">None</option>`
+                $("#address").val("")
+                $("#sum-address").html($("#address").val())
+                return
+              }
+              xhttp.onload = function() {
+              document.getElementById("address").value = x
+              $("#address").val(x)
+              $("#sum-address").html($("#address").val())
+              document.getElementById("dis").innerHTML = this.responseText;
+              }
+              xhttp.open("GET", "/upd?code="+code+"#");
+              xhttp.send();
+          }) 
+          
+          $("#dis").change(function() {
+            code = $(this).val()
+            x = $("#dis option[value=\""+$(this).val()+"\"]").html()
+            a = $("#address").val().split(",")
+                $("#address").val(a[0])
+
+              if ($(this).val() === "") {
+                document.getElementById("war").innerHTML = `<option value="">None</option>`
+                $("#sum-address").html($("#address").val())
+                return
+              }
+              xhttp.onload = function() {
+              $("#address").val($("#address").val() + ", " + x)
+              $("#sum-address").html($("#address").val())
+              document.getElementById("war").innerHTML = this.responseText;
+              }
+              xhttp.open("GET", "/upw?code="+code+"#");
+              xhttp.send();
+          })
+
+          $("#war").change(function() {
+            code = $(this).val()
+            x = $("#war option[value=\""+$(this).val()+"\"]").html()
+            a = $("#address").val().split(",")
+                $("#address").val(a[0]+","+a[1])
+              if ($(this).val() === "") {
+                $("#sum-address").html($("#address").val())
+                return
+              }
+              $("#address").val($("#address").val() + ", " + x)
+              $("#sum-address").html($("#address").val())
+          })
+              
+        </script>
+
+      </div>
+    </div>
+    <div class="container1">
+      {{template "Footer".}}
+    </div>
+    
+  </body>
+</html>

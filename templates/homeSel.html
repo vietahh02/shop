@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+    <style>
+        .container {
+            margin-top: 40px;
+            margin-bottom: 40px;
+            display: grid;
+            gap: 20px;
+        }
+        .container .order {
+            position: relative;
+            display: grid;
+            cursor: pointer;
+        }
+        .container .order .choose {
+            position: relative;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container1">
+      {{template "Header".}}
+    </div>
+
+    <div class="container">
+        <div class="order" id="order">
+            <h3>Order</h3>
+            <div class="choose" id="choose">
+              <ul>
+                <li><a href="/cusOrder?status=1#">The order is processing</a></li>
+                <li><a href="/cusOrder?status=2#">The order is being prepared</a></li>
+                <li><a href="/cusOrder?status=3#">The order is being shipped</a></li>
+                <li><a href="/cusOrder?status=4#">The order has been shipped successfully</a></li>
+                <li><a href="/cusOrder?status=5#">The order was canceled</a></li>
+              </ul>
+            </div>
+        </div>
+        <div class="products">
+            <a href="/products">Products</a>
+        </div>
+        <div class="info">
+          <a href="/infoSeller">Information Shop</a>
+        </div>
+        <div class="statistical">
+          <a href="/statistical">Statistical</a>
+        </div>
+    </div>
+
+    <script>
+        $("#order").click(function() {
+          if ($("#choose").css("display") == 'none') {
+            $("#choose").css("display","block");
+          }else {
+            $("#choose").css("display","none");
+          }
+        })
+    </script>
+
+  <div class="container1">
+    {{template "Footer".}}
+  </div>
+</body>
+</html>

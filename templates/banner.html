@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/style_admin.css">
+</head>
+<body>
+<a href="/">Admin Page</a><br>
+<a href="/newBanner" class="add-new">Add new</a>
+    <div class="banner">
+    {{range .}}
+        <div class="ele">
+            <div><img src="{{.Image}}" alt=""></div>
+            <div><button onclick="myFunction('{{.IdBannerImg}}')">Delete</button></div>
+        </div>
+        {{end}}
+    </div>
+    <script>
+        function myFunction(id) {
+                if (confirm("Delete this banner!!!")) {
+                    window.location.href = "/deleteBanner?id="+id+"#"
+                }
+            }
+    </script>
+
+</body>
+</html>

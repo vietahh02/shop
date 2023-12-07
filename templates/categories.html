@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/style.css" />
+  </head>
+  <body>
+  <a href="/">Admin Page</a>
+    <div class="container-cate">
+
+      <a href="/newCate">Add New Category</a>
+      <div class="categories">
+        <ol>
+          {{range .}}
+            <li> {{.NameCate}} <a href="/infoCate?id={{.IdCate}}#">Fix</a></li>
+          {{end}}
+        </ol>
+      </div>
+    </div>
+  </body>
+</html>

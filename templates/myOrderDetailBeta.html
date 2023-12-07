@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+    <link rel="stylesheet" href="../static/css/style_Beta.css">
+</head>
+<body>
+
+    <div class="container1">
+        {{template "Header".}}
+    </div>
+    
+    {{if .}}
+    <div class="container">
+        <div class="back">
+            <a href="/myOrderBeta"><i class="fa-solid fa-chevrons-left fa-2xs"></i>Quay lại trang đơn hàng</a>
+        </div>
+        <h4>Chi tiết đơn hàng của bạn</h4>
+        <div class="or">
+            <h5>Ngày đặt hàng:</h5>
+            <p>{{.Od.DateOrder}}</p>
+        </div>
+        <div class="re">
+            <h5>Tình trạng đơn hàng: {{.Od.Status.Name}}</h5>
+            {{if .Od.DateReceive}}
+                <p>Ngày nhận hàng: {{.Od.DateReceive}}</p>
+            {{else}}
+                <p>Sẽ nhận được hàng khoảng 3 ngày kể từ ngày đặt hàng</p>
+            {{end}}
+        </div>
+        <div class="title">
+            <div class="ad">Địa chỉ người nhận</div>
+            <div class="ad">Hình thức giao hàng</div>
+            <div class="ad">Hình thức thanh toán</div>
+        </div>
+        <div class="info-order">
+            <div class="ad1 address">
+                <h6>{{.Od.Info.FullName}}</h6>
+                <p>Address: {{.Od.Info.Address}}</p>
+                <p>S Address: {{.Od.Info.Saddress}}</p>
+                <p>Phone: {{.Od.Info.PhoneNumber}}</p>
+            </div>
+            <div class="ad1 delivery">
+                <div>{{.Od.Delivery.Name}}</div><br>
+                <div>Được giao bởi "nó tự đi"</div>
+            </div>
+            <div class="ad1 payment">
+                <div>{{.Od.Payment.Name}}</div>
+            </div>
+        </div>
+        <div class="list-product-d">
+            <div class="title-d">
+                <div>Sản phẩm</div>
+                <div>Loại</div>
+                <div>Số lượng</div>
+                <div>Giá</div>
+            </div>
+            <hr>
+            {{range $i, $e := .Od.ListProduct}}
+            <div class="product-d">
+                <div class="p">
+                    <div class="img">
+                        <img src="{{$e.Image}}" alt="">
+                    </div>
+                    <div class="name">
+                        <p>{{$e.Name}}</p>
+                    </div>
+                </div>
+                <div class="a-d kind">{{$e.Color.ColorUrl}}</div>
+                <div class="a-d quantity">{{$e.Sold}}</div>
+                <div class="a-d price">${{$e.Price}}</div>
+            </div>
+            <hr>
+            {{end}}
+            <div class="st-so">
+                <div class="st">
+                    <i class="fa-regular fa-store" style="color: #ff9500;"></i>
+                    <span>{{.Od.Store.Name}}</span>
+                    <button onclick='overViewShop("{{.Od.Store.Id}}")'>xem shop</button>
+                </div>
+                <div class="so">
+                    <div class="all-price">
+                        {{if eq .Od.Status.Id "1"}}
+                            <button onclick='cancel("{{.Od.OsId}}")'>Cancel</button>
+                        {{end}}
+                        <button id="again" onclick='buyAgain("{{.Od.OsId}}")'>Buy again</button>
+                        <span>${{.Od.AllPrice}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{end}}
+
+
+    <div class="container1">
+        {{template "Footer".}}
+    </div>
+
+    <script>
+        function overViewShop(idShop) {
+            location.href = "#"
+        }
+        function buyAgain(idos) {
+            location.href = "#"
+        }
+        function cancel(idos) {
+            location.href = "#"
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+    <style>
+        body {
+            background-color: rgb(230, 253, 255);
+        }
+        .login {
+            max-width: 500px;
+            padding: 30px 30px 0 30px;
+            background-color: white;
+            margin: 50px auto;
+            box-shadow: 0px 0px 15px 0px rgba(0,0,0,.5);
+        }
+        .title {
+            text-align: center;
+        }
+        input {
+            padding: 5px;
+            width: 100%;
+        }
+        .sub button {
+            margin: 10px 0 20px 0;
+            width: 100%;
+            padding: 10px;
+            font-size: 10px;
+            border: none;
+            background-color: rgb(0, 0, 211);
+            color: white;
+        }
+        .diff {
+            text-align: center;
+            font-size: 12px;
+        }
+        .diff a {
+            color: rgb(50, 50, 255);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="login">
+            <div class="title">
+                Account Login
+            </div>
+            <form action="/loginSel" method="post">
+                <div class="lo">
+                    <input type="text" placeholder="Username" name="username"><br>
+                    <input type="password" placeholder="Password" name="password">
+                </div>
+                <div class="sub">
+                    <button type="submit">SIGN IN</button>
+                </div>
+            </form>
+            <div class="diff">
+                <p>Forgot <a href="/forgetPasswordForSeller">Username / Password?</a></p>
+                <p>Create an account? <a href="/registerSel">Sign up<a></p>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

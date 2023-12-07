@@ -1,0 +1,9 @@
+    <option value="" style="color: rgb(180, 180, 180)">None</option>
+    
+{{if .}}
+
+    {{range $i, $e := .}}
+    <option value="{{.Code}}">{{.Name}}</option>
+    {{end}}
+
+{{end}}

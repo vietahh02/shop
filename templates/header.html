@@ -1,0 +1,77 @@
+{{define "Header"}}
+<div class="header">
+      <div class="logo">
+        <a href="/home">
+          <img src="../static/img/Logo.png" alt="logo">
+        </a>
+      </div>
+    <div class="info-search-cart">
+        <div class="info">
+            <a href="/loginSel">Seller</a>
+            <p>&nbsp;</p>
+            <a href="/info-acc">My Account</a>
+            <p></p>
+            <a href="#">Wishlist</a>
+            <p></p>
+            <a href="/myOrder">My Orders</a>
+            <p></p>
+            <a href="#">Checkout</a>
+            <p></p>
+            <a href="/loginCus" id="a">Login</a>
+        </div>
+          <script>
+            const c = getCookie("acc");
+            if (c != null) {
+              a = c.split("/");
+              document.getElementById('a').innerHTML = a[0];
+              document.getElementById('a').href = "#"
+            }
+            function getCookie(name) {
+              const cookies = document.cookie.split(';');
+              for (const cookie of cookies) {
+                  const [key, value] = cookie.split('=');
+                  if (key === name) {
+                      return value;
+                  }
+              }
+                return null;
+            }
+          </script>
+        <div class="search-cart">
+            <div class="search">
+                <form action="/searchBeta" method="get">
+                    <input type="text" placeholder="Search here..." name="key">
+                    <button type="submit"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
+                </form>
+            </div>
+            <div class="cart">
+                <div><a href="/carts"><i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i></a></div>
+                <div class="my-money">
+                    <a href="#">TOTAL</a>
+                    <a href="#">$600.00</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="categories">
+    <div class="cate" id="toggleButton">
+      <div class="menu">
+        <div class="circle"></div>
+        <div class="rectangle"></div>
+      </div>
+      <div>CATEGORIES</div>
+    </div>
+    <div class="menu-categories">
+      {{range $i, $e := .ListCate}}
+      <a href="#">{{$e.NameCate}}</a>
+      {{if eq $i 5}}{{break}}{{end}}
+      {{end}}
+    </div>
+    <div class="info-cate">
+      {{range .ListCate}}
+      <div><a href="#">{{.NameCate}}</a></div>
+      {{end}}
+    </div>
+  </div>
+{{end}}

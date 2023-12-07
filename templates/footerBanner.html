@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+  <link rel="stylesheet" href="../static/css/style_admin.css">
+</head>
+<body>
+<a href="/">Admin Page</a><br>
+<a href="/newFooterBanner">Add New</a>
+<div class="container-admin">
+  <div style="margin-right: 60px">
+    <h4>Title</h4>
+    <p>Content</p>
+  </div>
+  {{range .}}
+  <div>
+    <h4 style="margin-right: 20px">{{.Title}}</h4>
+    <p>{{.Content}}</p>
+    <div><button onclick="myFunction('{{.IdBanner}}')">Delete</button></div>
+  </div>
+  {{end}}
+</div>
+<script>
+  function myFunction(id) {
+    if (confirm("Delete this banner!!!")) {
+      window.location.href = "/deleteFooterBanner?id="+id+"#"
+    }
+  }
+</script>
+</body>
+</html>

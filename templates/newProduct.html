@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/style.css" >
+    <script src="../static/js/script1.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="back">
+            <a href="/products">Back</a>
+        </div>
+        <div class="new-product1">
+            <form action="/new" method="post" enctype="multipart/form-data">
+                <label for="img">Image:
+                    <img src=""><br>
+                    <input type="file" name="img" id="img" style="display: none;">
+                    <input type="text" name="checkImg" id="checkImg" style="display: none;">
+                </label><br>
+                <label for="name">
+                    Name:<input type="text" name="name" id="name" required>
+                </label><br>
+                <label for="price">
+                    Price:<input type="number" name="price" id="price" value="0" min="0" required>
+                </label><br>
+                <label for="discount">
+                    Discount:<input type="number" name="discount" id="discount" min="0" max="1" step="0.01" value="0">
+                </label><br>
+                <label for="inStock">
+                    In Stock:<input type="number" name="inStock" id="inStock" min="0" step="1">
+                </label><br>
+                <label for="cate">Category:
+                    <select name="cate" id="cate">
+                        {{range .}}
+                        <option value="{{.IdCate}}">{{.NameCate}}</option>
+                        {{end}}
+                    </select>
+                </label><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" href="../static/css/style_h_f.css" />
+    <style>
+        ul {
+            display: grid;
+        }
+        li {
+            display: inline-flex;
+        }
+        th, td {
+            text-align: center;
+        }
+        table, tr, th, td  {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 5px 10px;
+        }
+        a {
+            text-decoration: none;
+            color: red;
+        }
+        .container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        button {
+            /* border: none; */
+            padding: 0 20px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container1">
+        {{template "Header" .}}
+    </div>
+    {{if .Order}}
+    <div class="container">
+      <div class="back">
+        <a href="/cusOrder?status={{.OrderDetail.Status.Id}}#">Back</a>
+    </div>
+      <ul>
+        <li>
+          <p>ID:&nbsp;</p>
+          <p>{{.Order.Id}}</p>
+        </li>
+        <li>
+          <p>CustomerID:&nbsp;</p>
+          <p>{{.Order.CustomerID}}</p>
+        </li>
+        <li>
+          <p>Customer Name:&nbsp;</p>
+          <p>{{.Order.CustomerName}}</p>
+        </li>
+        <li>
+          <p>Phone:&nbsp;</p>
+          <p>{{.Order.Phone}}</p>
+        </li>
+        <li>
+          <p>Address:&nbsp;</p>
+          <p>{{.Order.Address}}</p>
+        </li>
+        <li>
+          <p>Specific Address:&nbsp;</p>
+          <p>{{.Order.Saddress}}</p>
+        </li>
+        <li>
+          <p>Date:&nbsp;</p>
+          <p>{{.Order.Date}}</p>
+        </li>
+        <li>
+          <p>Delivery:&nbsp;</p>
+          <p>{{.Order.Delivery.Name}}</p>
+        </li>
+        <li>
+          <p>Payment:&nbsp;</p>
+          <p>{{.Order.Payment.Name}}</p>
+        </li>       
+        {{if eq .OrderDetail.Status.Id "1"}}
+        <li>
+          <button style="background-color: aquamarine; color: green;" id="next">
+            Prepare goods
+          </button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <button style="background-color: yellow; color: red;" id="cancel">
+              Cancel
+          </button>   
+        </li>
+        {{else if eq .OrderDetail.Status.Id "2"}}
+        <li>
+          <button style="background-color: aquamarine; color: green;" id="next">
+            Ship
+          </button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <button style="background-color: yellow; color: red;" id="cancel">
+              Cancel
+          </button>  
+        </li>
+        {{else if eq .OrderDetail.Status.Id "3"}}
+        <li>
+          <p style="background-color: aquamarine; color: green; padding: 10px 20px;font-size: 20px;">
+            {{.OrderDetail.Status.Name}}
+          </p>
+          <button style="background-color: aquamarine; color: green;" id="next">
+            Confirm success
+          </button>
+        </li>
+        {{else if eq .OrderDetail.Status.Id "4"}}
+        <li>
+          <p style="background-color: aquamarine; color: green; padding: 10px 20px;font-size: 20px;">
+            {{.OrderDetail.Status.Name}}
+          </p>
+        </li>
+        {{else if eq .OrderDetail.Status.Id "5"}}
+        <li>
+          <p style="background-color: yellow; color: red; padding: 10px 20px;font-size: 20px;">
+            {{.OrderDetail.Status.Name}}
+          </p>
+        </li>
+        {{end}}
+      </ul>
+    
+    
+      <h5>Products</h5>
+      <table style="position: relative;">
+        <tr>
+            <th>STT</th>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Price</th>
+            <th>Amount</th>
+        </tr>
+        <script>
+          total = 0
+        </script>
+        {{range $i, $e := .OrderDetail.ListPro}}  
+        <tr>
+            <td>{{$i}}</td>
+            <td>{{$e.ProductName}}</td>
+            <td>{{$e.ColorName}}</td>
+            <td>{{$e.Amount}}</td>
+            <td>{{$e.Price}}</td>
+        </tr>
+        <script>
+          total = total + parseFloat("{{$e.Price}}")
+        </script>
+        {{end}}
+        <tr>
+          <td>Total</td>
+          <td id="total" style="position: absolute; right: 0 ;border: none;left: 1px;">0</td>
+        </tr>
+      </table>
+    </div>
+    <script>
+      document.getElementById("total").innerHTML = total
+    </script>
+
+    <script>
+      const xml = new XMLHttpRequest();
+
+      $("#cancel").click(function(){
+        xml.open("POST","/detailCusOrder?id={{.OrderDetail.Id}}&status=5#")
+        xml.send()
+        xml.onload = function() {
+          if (xml.status == 200) {
+            location.href = "/cusOrder?status={{.OrderDetail.Status.Id}}#"
+          }else {
+            location.href = "/home"
+          }
+        }
+      })
+
+      $("#next").click(function () {
+        xml.open("POST", "/detailCusOrder?id={{.OrderDetail.Id}}&status={{.OrderDetail.Status.Id}}#")
+        xml.send()
+        xml.onload = function() {
+          if (xml.status == 200) {
+            location.href = "/cusOrder?status={{.OrderDetail.Status.Id}}#"
+          }else {
+            location.href = "/home"
+          }
+        }
+      })
+
+    </script>
+    {{end}}
+    <div class="container1">
+        {{template "Footer" .}}
+    </div>
+  </body>
+</html>

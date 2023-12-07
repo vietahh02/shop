@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+    <link rel="stylesheet" href="../static/css/style_detail.css" />
+    <script src="../static/js/script-detail.js" defer></script>
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css" />
+    
+  </head>
+  <body>
+    <div class="container1">
+      {{template "Header".}}
+    </div>
+    {{if .}}
+    <div class="container">
+      
+      <div class="left">
+        <div class="picture">
+          <div class="zoom">
+            <picture>
+              <img src="{{.P.Image}}"/>
+            </picture>
+          </div>
+          <div class="list">
+            <div class="ele clicked">
+              <picture>
+                <img
+                  src="{{.P.Image}}"
+                />
+              </picture>
+            </div>
+            {{range .I}}
+            <div class="ele">
+              <picture>
+                <img src="{{.Url}}"/>
+              </picture>
+            </div>
+            {{end}}
+          </div>
+          <button class="prev"><i class="fa-thin fa-circle-chevron-left"></i></button>
+          <button class="next"><i class="fa-thin fa-circle-chevron-left fa-rotate-180"></i></button>
+        </div>
+        <div class="review">
+          <div class="title">
+            <p>Reviews</p>
+            <div class="star">
+              <script>
+                starAll = "{{.AllSta}}"
+                i=0
+                for (;i<Math.floor(starAll);i++) {
+                  document.writeln("<i class=\"fa-solid fa-star fa-xs\" style=\"color: #e2b028;\"></i>")
+                }
+                if (Math.floor(starAll)-starAll < 0) {
+                  document.writeln("<i class=\"fa-solid fa-star-half-stroke fa-xs\" style=\"color: #e2b028;\"></i>")
+                  i++
+                }
+                for (;i<5;i++) {
+                  document.writeln("<i class=\"fa-regular fa-star fa-xs\" style=\"color: #e2b028;\"></i>")
+                }
+              </script>
+              <p>{{.AllSta}}</p>
+            </div>
+          </div>
+          <hr />
+          <div class="rating">
+            <button id="all-comment">All ({{.All}})</button>
+            <button>
+              <i
+                class="fa-sharp fa-regular fa-images fa-xs"
+                style="color: #ffffff"
+              ></i>
+              23
+            </button>
+            <button>
+              <i class="fa-solid fa-comments fa-xs" style="color: #ffffff"></i>
+              23
+            </button>
+            <button class="s">
+              <i class="fa-solid fa-star fa-2xs" style="color: #fff"></i>
+              <i class="fa-solid fa-star fa-2xs" style="color: #fff"></i>
+              <i class="fa-solid fa-star fa-2xs" style="color: #fff"></i>
+              <i class="fa-solid fa-star fa-2xs" style="color: #fff"></i>
+              <p>2.123</p>
+            </button>
+          </div>
+          <div class="comment">
+            {{range $i, $e := .ListComment}}
+            <hr>
+            <div class="comment-rating">
+              <div class="avatar">
+                <img src="{{$e.Info.Image}}"alt=""/>
+              </div>
+              <div class="info">
+                <div class="s">
+                  <script>
+                    starAll = "{{$e.Star}}"
+                    i=0
+                    for (;i<Math.floor(starAll);i++) {
+                      document.writeln("<i class=\"fa-solid fa-star fa-2xs\" style=\"color: #e2b028;\"></i>")
+                    }
+                    if (Math.floor(starAll)-starAll < 0) {
+                      document.writeln("<i class=\"fa-solid fa-star-half-stroke fa-2xs\" style=\"color: #e2b028;\"></i>")
+                      i++
+                    }
+                    for (;i<5;i++) {
+                      document.writeln("<i class=\"fa-regular fa-star fa-2xs\" style=\"color: #e2b028;\"></i>")
+                    }
+                  </script>
+                </div>
+                <div class="name">{{$e.Info.FullName}}</div>
+                <div style="font-size: 10px;color: rgb(198, 198, 198);margin: -5px 0;" class="style">Color: {{$e.Color.ColorUrl}}</div>
+              </div>
+              <div class="day">{{$e.Date}}</div>
+            </div>
+            <div class="com">
+              {{.Com}}
+            </div>
+            {{end}}
+            <hr>
+            <div class="comment-rating">
+              <div class="avatar">
+                <img
+                  src="../static/img-test/alex-suprun-ZHvM3XIOHoE-unsplash.jpg"
+                  alt=""
+                />
+              </div>
+              <div class="info">
+                <div class="s">
+                  <i class="fa-solid fa-star fa-xs" style="color: #e2b028"></i>
+                  <i class="fa-solid fa-star fa-xs" style="color: #e2b028"></i>
+                  <i class="fa-solid fa-star fa-xs" style="color: #e2b028"></i>
+                  <i class="fa-solid fa-star fa-xs" style="color: #e2b028"></i>
+                  
+                </div>
+                <div class="name">Timona Simaung</div>
+              </div>
+              <div class="day">2 May</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="detail">
+          <div class="star">
+            <script>
+              starAll = "{{.P.Star}}"
+              i=0
+              for (;i<Math.floor(starAll);i++) {
+                document.writeln("<i class=\"fa-solid fa-star\" style=\"color: #ffc808;\"></i>")
+              }
+              if (Math.floor(starAll)-starAll < 0) {
+                document.writeln("<i class=\"fa-solid fa-star-half-stroke\" style=\"color: #ffc808;\"></i>")
+                i++
+              }
+              for (;i<5;i++) {
+                document.writeln("<i class=\"fa-regular fa-star\" style=\"color: #ffc808;\"></i>")
+              }
+            </script>
+            <p>&nbsp;{{.P.Star}}</p>
+          </div>
+          <div class="name-price">
+            <div class="name">
+              {{.P.Name}}
+            </div>
+            <div class="price">
+              {{if eq .P.Discount .P.Price}}
+              <p class="new">$ {{.P.Price}}</p>
+              {{else}}
+              <p class="old">$ {{.P.Price}}</p>
+              <p class="new">$ {{.P.Discount}}</p>
+              {{end}}
+            </div>
+          </div>
+          <div class="button">
+            <button class="add" id="add">Add to Cart</button>
+            <button class="buy" id="buy">Buy it Now</button>
+            <button class="heart"><i class="fa-solid fa-heart"></i></button>
+            <p style="color: #d3d3d3;margin: 5px 0 0 0;">Amount: <p id="amount">{{.P.InStock}}</p><p>
+          </div>
+          <hr>
+          <div class="color">
+              {{if .C}}
+              <div class="name">
+                <div class="co">Color:&nbsp;</div><div class="na name-color" id="name-color"></div>
+              </div>
+              <div class="pick-color">
+                {{range .C}}
+                <button class="pc {{.ColorUrl}}"></button>
+                <script>
+
+                  document.getElementsByClassName("pc")[document.getElementsByClassName("pc").length-1].style = "background-color :" + "{{.ColorUrl}}";
+
+                </script>
+                {{end}}
+              </div>
+              {{else}}
+              <div class="name">
+                <div class="co">Color:&nbsp;</div><div class="na name-color" id="name-color">None</div>
+              </div>
+              {{end}}
+          </div>
+          <div class="time">
+            <p><i class="fa-regular fa-calendar-check"></i> Delivery from sweden, 15-45 days</p>
+          </div>
+          <div class="des">
+            <div class="title">
+              Description
+            </div>
+            <div class="content">
+              {{.P.Description}}
+            </div>
+          </div>
+          <div class="character">
+            <p><i class="fa-solid fa-circle"></i>&nbsp;Best in Quality</p>
+            <p><i class="fa-solid fa-circle"></i>&nbsp;Anti-creak joinery</p>
+            <p><i class="fa-solid fa-circle"></i>&nbsp;Relocation friendly design</p>
+            <p><i class="fa-solid fa-circle"></i>&nbsp;High gloss, high style</p>
+            <p><i class="fa-solid fa-circle"></i>&nbsp;Easy-access hydraulic storage</p>
+          </div>
+          <div class="store">
+            <div class="title">
+              <p>Store</p>
+            </div>
+            <div class="info">
+              <div class="image">
+                <img src="../../static/img-test/ben-sweet-2LowviVHZ-E-unsplash.jpg" alt="">
+              </div>
+              <div class="st">
+                <div class="star-store">
+                  <i class="fa-solid fa-star fa-xs" style="color: #e2b028"></i>
+                  <i class="fa-solid fa-star fa-xs" style="color: #e2b028"></i>
+                  <i class="fa-solid fa-star fa-xs" style="color: #e2b028"></i>
+                  <i class="fa-solid fa-star fa-xs" style="color: #e2b028"></i>
+                </div>
+                <div class="name-store">
+                  Rare
+                </div>
+                <div class="followers-store">
+                  25k followers
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="product-similar">
+          <div class="title-product-similar">
+            Similar items:
+          </div>
+          <div class="list">
+            <a href="/detailProduct?id=1#" class="product">
+              <img src="../../static/img-test/chastity-cortijo-98WE9hWWjiQ-unsplash.jpg" alt="">
+              <p>$1,999</p>
+            </a>
+            <a href="/detailProduct?id=2#" class="product">
+              <img src="../../static/img-test/chastity-cortijo-98WE9hWWjiQ-unsplash.jpg" alt="">
+              <p>$1,999</p>
+            </a>
+            <a href="/detailProduct?id=3#" class="product">
+              <img src="../../static/img-test/chastity-cortijo-98WE9hWWjiQ-unsplash.jpg" alt="">
+              <p>$1,999</p>
+            </a>
+            <a href="/detailProduct?id=4#" class="product">
+              <img src="../../static/img-test/chastity-cortijo-98WE9hWWjiQ-unsplash.jpg" alt="">
+              <p>$1,999</p>
+            </a>
+            <a href="/detailProduct?id=5#" class="product">
+              <img src="../../static/img-test/chastity-cortijo-98WE9hWWjiQ-unsplash.jpg" alt="">
+              <p>$1,999</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="notification" id="notification" hidden>
+      
+    </div>
+    <script>
+      const add = document.getElementById('add');
+      const buy = document.getElementById('buy');
+      const notification = document.getElementById('notification');
+      const xhttp = new XMLHttpRequest();
+      const col = document.getElementsByClassName('name-color');
+      const a = document.getElementById('amount');
+      let amount = "{{.P.InStock}}"
+      add.addEventListener('click', () =>{
+        if(col[0].innerHTML == "") {
+          notification.innerHTML = `Choose a color`
+          notification.style.display = "block";
+          notification.style.color = "red"
+          setTimeout(function() {
+            notification.style.display = "none";
+          },3000); 
+          return
+        }
+
+        function getCookie(name) {
+          const cookies = document.cookie.split(';');
+          for (const cookie of cookies) {
+            const [key, value] = cookie.split('=');
+            if (key === name) {
+              return value;
+            }
+          }
+          return null;
+        }
+
+        if (getCookie('acc') != null) {
+          xhttp.open("GET", "/newCart?idP={{.P.Id}}&idC="+col[0].innerHTML+"&amount=1#");
+          xhttp.onload = function () {
+            console.log(Number(JSON.parse(this.responseText)), Number(amount))
+            if (Number(JSON.parse(this.responseText)) >= Number(amount)) {
+              notification.innerHTML = `<i class="fa-sharp fa-light fa-circle-check" style="color: red;"></i> Out of stock!`;
+              notification.style.display = "block";
+              notification.style.color = "red"
+              setTimeout(function() {
+                notification.style.display = "none";
+              },3000); 
+            }else {
+              notification.innerHTML = `<i class="fa-sharp fa-light fa-circle-check" style="color: #00ffaa;"></i> Add successfully`;
+              notification.style.display = "block";
+              notification.style.color = "#00ffaa"
+              setTimeout(function() {
+                notification.style.display = "none";
+              },3000); 
+            }
+          }
+          xhttp.send(); 
+          
+        }else {
+          if (getCookie("guest") == null) {
+                notification.innerHTML = `<i class="fa-sharp fa-light fa-circle-check" style="color: #00ffaa;"></i> Add successfully`
+                notification.style.display = "block";
+                notification.style.color = "#00ffaa"
+                setTimeout(function() {
+                  notification.style.display = "none";
+                },3000);
+            xhttp.open('GET', "/createGuest?idP={{.P.Id}}&idC="+col[0].innerHTML+"&amount=1#")
+            xhttp.send();
+            
+          }else {
+            xhttp.open('POST', "/cartGuest?idP={{.P.Id}}&idC="+col[0].innerHTML+"&amount=1#");  
+            xhttp.onload = function () {
+            console.log(Number(JSON.parse(this.responseText)), Number(amount))
+            if (Number(JSON.parse(this.responseText)) >= Number(amount)) {
+              notification.innerHTML = `<i class="fa-sharp fa-light fa-circle-check" style="color: red;"></i> Out of stock!`;
+              notification.style.display = "block";
+              notification.style.color = "red"
+              setTimeout(function() {
+                notification.style.display = "none";
+              },3000); 
+            }else {
+              notification.innerHTML = `<i class="fa-sharp fa-light fa-circle-check" style="color: #00ffaa;"></i> Add successfully`;
+              notification.style.display = "block";
+              notification.style.color = "#00ffaa"
+              setTimeout(function() {
+                notification.style.display = "none";
+              },3000); 
+            }
+          }
+          xhttp.send();
+          }
+        }
+      
+      });
+    </script>
+    {{end}}
+    <div class="container1">
+      {{template "Footer".}}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/style_Beta.css">
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+</head>
+<body>
+
+    <div class="container1">
+        {{template "Header".}}
+    </div>
+    
+    <div class="container">
+        <div class="button">
+            <button class="" onclick="statusType('')">Tất cả</button>
+            <button onclick="statusType(1)">Chờ thanh toán</button>
+            <button onclick="statusType(2)">Đang đóng gói</button>
+            <button onclick="statusType(3)">Đang giao</button>
+            <button onclick="statusType(4)">Hoàn thành</button>
+            <button onclick="statusType(5)">Đã hủy</button>
+        </div>
+        <div class="list-purchase">
+            {{if .ListOB}}
+            {{range $i, $e := .ListOB}}
+            <div class="purchase">
+                <div class="store-status">
+                    <div class="store">
+                        <i class="fa-sharp fa-light fa-store fa-xs" style="color: #ff8800;"></i>
+                        <span class="">{{$e.Store.Name}}</span>
+                        <button class="" onclick='shop("{{$e.Store.Id}}")'>Xem shop</button>
+                    </div>
+                    <div class="status">
+                        <span class="">{{$e.Status.Name}}</span>
+                    </div> 
+                </div>
+                <hr>
+                {{range $i1, $p := $e.ListProduct}}
+                <div class="product">
+                    <div class="info">
+                        <div class="img">
+                            <img src="{{$p.Image}}" alt="">
+                        </div>
+                        <div class="n-k-q">
+                            <div class="name">
+                                {{$p.Name}}
+                            </div>
+                            <div class="kind">
+                                {{$p.Color.ColorUrl}}
+                            </div>
+                            <div class="quantity">
+                                x{{$p.Sold}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="price">
+                        {{$p.Price}}
+                    </div>
+                </div>
+                <hr>
+                {{end}}
+                <div class="total">
+                    <span>Tổng tiền: </span>
+                    <span class="all-price">${{$e.AllPrice}}</span>
+                </div>
+                <div class="choose">
+                    {{if eq $e.Status.Id "1"}}
+                        <button onclick='cancel("{{$e.OsId}}")'>Hủy</button>
+                    {{end}}
+                    <button class="again">Buy again</button>
+                    <button class="detail" onclick='xemDetail("{{$e.Id}}", "{{$e.OsId}}")'>Xem detail</button>
+                    <!-- <button class="chat">chat</button> -->
+                </div>
+            </div>
+            {{end}}
+            {{end}}
+        </div>
+    </div>
+
+    <div class="container1">
+        {{template "Footer".}}
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const ty = urlParams.get("ty");
+        if (!ty || ty == "") {
+            $(".button button").eq(0).addClass("active")
+        }else {
+            $(".button button").eq(ty).addClass("active")
+        }
+    </script>
+
+    <script>//button
+        const xml = new XMLHttpRequest()
+
+        function res() {
+            $(".button button").removeClass("active")
+        }
+        $(".button button").click(function() {
+            res()
+            $(this).addClass("active")
+        });
+        function statusType(num) {
+            location.href = "/myOrderBeta?ty="+num+"#"
+        }
+        function shop(num) {
+            location.href = "#"
+        }
+        function cancel(id) {
+            xml.open("POST","/myOrderBeta?id="+id+"#")
+            xml.onload = function() {
+                if (xml.readyState == 4 && xml.status == 200) {
+                    location.reload()
+                }
+            }
+            xml.send()
+
+        }
+        function xemDetail(ido, idos) {
+            location.href = "/myOrderDetailBeta?ido="+ido+"&idos="+idos+"#"
+        }
+
+    </script>
+</body>
+</html>

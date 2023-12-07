@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/bootstrap/css/">
+    <link rel="stylesheet" href="../static/css/styleh.css">
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css">
+</head>
+<body>
+
+    {{if .}}
+        <p style="color: red">{{.}}</p>
+    {{end}}
+
+    <div class="background-login">
+        <div class="cover">
+            <div class="login">
+            <div><h1>Login</h1></div>
+            <div class="form">
+                <form action="/registerCustomer" method="post">
+                    <div>
+                        <label for="username" >Username <br>
+                        <i class="fa-solid fa-user fa-2xs u"></i>
+                        <input type="text" name="username" id="username" placeholder="Type your username">
+                        </label>
+                    </div><br>
+                    <div>
+                        <label for="password">Password <br>
+                        <i class="fa-solid fa-lock fa-2xs p"></i>
+                        <input type="password" name="password" id="password" placeholder="Type your password">
+                    </label>
+                    </div> <br>
+                    
+                    <div>
+                        <label for="c-password">Password <br>
+                        <i class="fa-solid fa-lock fa-2xs p"></i>
+                        <input type="password" name="c-password" id="c-password" placeholder="Type your password">
+                    </label>
+                    </div><br>
+                    <a href="#" class="forget">Forgot password?</a><br>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+            <div class="login-diff">
+                <div><p>Or Sign In Using</p></div>
+                <div class="diff">
+                    <a href="#"><i class="fa-brands fa-facebook fa-2xl" style="color: #3f7be4;"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter fa-2xl" style="color: #5291ff;"></i></a>
+                    <a href="#"><i class="fa-brands fa-google fa-2xl" style="color: #f52947;"></i></a>
+                </div>
+            </div>
+            <div class="sign-in">
+                <div><p>Or Sign In Using</p></div>
+                <a href="/loginCus" class="in">Sign In</a>
+            </div>
+        </div>
+        </div>
+        
+    </div>
+</body>
+</html>

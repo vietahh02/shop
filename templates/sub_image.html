@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/style_admin.css">
+    <script src="../static/js/script1.js" defer></script>
+</head>
+<body>
+    {{if .Id}}
+    <div class="back">
+        <a href="/info?id={{.Id}}#">Back</a>
+    </div>
+    <div class="container-sub-image">
+        <p style="margin: 10px;color: red;">Max 8 Image</p>
+        <form action="/images?id={{.Id}}#" method="post" enctype="multipart/form-data">
+        {{end}}
+            <label for="img">New Image:
+                <img src=""><br>
+                <input type="file" name="img" id="img" style="display: none;">
+                <input type="text" name="checkImg" id="checkImg" style="display: none;">
+            </label><br>
+            <input type="submit" value="Add New">
+        </form>
+        {{if .Len}}
+        <p style="margin: 10px;">Have {{.Len}} Image</p>
+        {{end}}
+        {{if .Image}}
+            {{range .Image}}
+            <div class="item">
+                <img src="{{.Url}}" alt="">
+                <button href="#" onclick="click_delete('{{.Id}}')">Delete</button>
+            </div>
+            {{end}}
+        {{end}}
+    </div>
+
+    <script>
+        function click_delete(a) {
+            if (confirm("Delete this Image!!!")) {
+                console.log("/deleteImage?id="+a+"#")
+                window.location.href = "/deleteImage?id="+a+"#"
+            }  
+        }
+    </script>
+</body>
+</html>

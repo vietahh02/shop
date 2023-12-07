@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+    <style>
+        .container {
+            margin: 20px;
+        }
+        label {
+            margin: 5px 0;
+        }
+        input[type="text"],input[type="number"],input[type="email"] {
+            width: 280px;
+        }
+        .change {
+            position: relative;
+            top: 20px;
+            color: green;
+        }
+        .image {
+            width: 50px;
+            height: auto;
+            border-radius: 50%;
+        }
+        #notification {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            color: #ee4d2d;
+            padding: 15px 30px;
+            background-color: rgb(0,0,0,0.5);
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container1">
+        {{template "Header".}}
+    </div>
+    
+    <div class="container">
+        <!-- <form action="/info-acc" method="post" class="g" enctype="multipart/form-data">  -->
+            <label for="img">Image:
+                <img src="{{.I.Image}}" class="image"><br>
+                <!-- <input type="file" name="img" id="img" style="display: none;"> -->
+                <!-- <input type="text" name="checkImg" id="checkImg" style="display: none;"> -->
+            </label><br>
+            <label for="user">
+                <span>UserName:</span>
+                <h4>{{.I.UserName}}</h4>
+            </label>
+            <label for="name">
+                <span>FullName:</span><br> 
+                <input type="text" id="name" name="name" placeholder="Enter your name" value="{{.I.FullName}}" required>
+            </label><br>
+            <label for="address">
+                <span>Address:</span><br> 
+                <input type="text" id="address" name="address" placeholder="Enter your address" value="{{.I.Address}}" required>
+            </label><br>
+            <label for="phone">
+                <span>Phone:</span><br> 
+                <input type="number" id="phone" name="phone" placeholder="Enter your phone number" value="{{.I.PhoneNumber}}" required>
+            </label><br>
+            <label for="email">
+                <span>Email:</span><br> 
+                <input type="email" id="email" name="email" placeholder="Enter your email" value="{{.I.Email}}" required>
+            </label><br><br>
+            <button  id="submit"> Update </button>
+        <!-- </form> -->
+        <a href="/change-password" class="change">Change password >></a>
+    </div>
+    <p id="notification"></p>
+
+    <div class="container1">
+        {{template "Footer".}}
+    </div>
+    
+    <script>
+        const xml = new XMLHttpRequest()
+        $("#submit").click(function () {
+            xml.open("POST","/infoSeller?name="+$("#name").val()+"&email="+$("#email").val+"&address="+$("#address").val+"&phone="+$("#phone").val+"&id={{.I.Id}}")
+            xml.onload = function () {
+                json = parseJSON(xml.responseText)
+                if (json == null || json == "") {
+                    $("#notification").css("display", "block")
+                    $("#notification").html("Update completed successfully")
+                    setTimeout(function() {
+                    $("#notification").css("display", "none")
+                    $("#notification").html("")
+                    },3000)
+                }else {
+                    $("#notification").css("display", "block")
+                    $("#notification").html(json)
+                    setTimeout(function() {
+                    $("#notification").css("display", "none")
+                    $("#notification").html("")
+                    },3000)
+                }
+            }
+            xml.send()
+        })
+    </script>
+
+</body>
+</html>

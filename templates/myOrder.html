@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../static/bootstrap/js/bootstrap.min.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../static/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="../static/css/style_h_f.css">
+    <style>
+        table  {
+            margin: 20px auto;
+        }
+        th, td {
+            text-align: center;
+        }
+        table, tr, th, td  {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 5px 10px;
+        }
+        a {
+            text-decoration: none;
+            color: red;
+        }
+        @media screen and (max-width:550px){
+            th, td {
+            padding: 5px;
+        }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container1">
+        {{template "Header" .}}
+    </div>
+
+    <div class="container">
+        
+        {{if .ListOrder}}
+        <table>
+            <tr>
+                <th>STT</th>
+                <th class="name">Name</th>
+                <th class="phone">Phone</th>
+                <th class="address">Address</th>
+                <th class="s-address">Specific Address</th>
+                <th class="date">Date</th>
+                <th class="status">Status</th>
+            </tr>
+            {{range $i, $e := .ListOrder}}
+            <tr>
+                <td>{{$i}}</td>
+                <td class="name">{{$e.CustomerName}}</td>
+                <td class="phone">{{$e.Phone}}</td>
+                <td class="address">{{$e.Address}}</td>
+                <td class="s-address">{{$e.Saddress}}</td>
+                <td class="date">{{$e.Date}}</td>
+                <td class="date">{{$e.Status.Name}}</td>
+                
+                <td><a href="/myOrderDetail?id={{$e.Id}}#">Detail</a></td>
+            </tr>
+            {{end}}
+        </table>
+        {{else}}
+            <h2>Empty.</h2>
+        {{end}}
+
+    </div>
+
+    <script>
+        var screenWidth = window.innerWidth;
+
+        console.log(screenWidth)
+        if (screenWidth < 770) {
+            $(".address").remove()
+            $(".s-address").remove()
+            $(".phone").remove()
+        }
+        if (screenWidth < 500) {
+            $(".date").remove()
+        }
+
+    </script>
+    </div>
+
+    <div class="container1">
+        {{template "Footer" .}}
+    </div>
+
+</body>
+</html>
