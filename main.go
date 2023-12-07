@@ -109,7 +109,7 @@ func main() {
 	http.HandleFunc("/jc", json_cart)
 	http.HandleFunc("/buy", buy)
 	http.HandleFunc("/test", test)
-	log.Fatal(http.ListenAndServe("localhost:9091", nil))
+	log.Fatal(http.ListenAndServe("localhost:9990", nil))
 }
 
 func signOut(w http.ResponseWriter, r *http.Request) {
@@ -2489,7 +2489,7 @@ func deleteCate(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/cate", http.StatusTemporaryRedirect)
 }
 
-/*****************************************************************/
+//*****************************************************************
 
 func checkSellerByUserAndPassword(user, password string) bool {
 	row, _ := db.Query("SELECT id FROM shopcart.stores where User = ? and Password = ?", user, password)
@@ -2673,7 +2673,7 @@ func checkEmail(email string) bool {
 	return rows != nil
 }
 
-// ***********res*******/
+// ***********res*******
 func upd(w http.ResponseWriter, r *http.Request) {
 	code := r.FormValue("code")
 	row, _ := db.Query("SELECT code, name FROM vietnam.districts where province_code = ?", code)
