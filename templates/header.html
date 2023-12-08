@@ -64,8 +64,10 @@
     </div>
     <div class="menu-categories">
       {{range $i, $e := .ListCate}}
+      {{if le $i 5}}
       <a href="#">{{$e.NameCate}}</a>
-      {{if eq $i 5}}{{break}}{{end}}
+      {{else}}
+      {{end}}
       {{end}}
     </div>
     <div class="info-cate">
