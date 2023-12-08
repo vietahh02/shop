@@ -250,26 +250,20 @@
             Similar items:
           </div>
           <div class="list">
-            <a href="/detailProduct?id=1#" class="product">
-              <img src="../../static/img-test/chastity-cortijo-98WE9hWWjiQ-unsplash.jpg" alt="">
-              <p>$1,999</p>
-            </a>
-            <a href="/detailProduct?id=2#" class="product">
-              <img src="../../static/img-test/chastity-cortijo-98WE9hWWjiQ-unsplash.jpg" alt="">
-              <p>$1,999</p>
-            </a>
-            <a href="/detailProduct?id=3#" class="product">
-              <img src="../../static/img-test/chastity-cortijo-98WE9hWWjiQ-unsplash.jpg" alt="">
-              <p>$1,999</p>
-            </a>
-            <a href="/detailProduct?id=4#" class="product">
-              <img src="../../static/img-test/chastity-cortijo-98WE9hWWjiQ-unsplash.jpg" alt="">
-              <p>$1,999</p>
-            </a>
-            <a href="/detailProduct?id=5#" class="product">
-              <img src="../../static/img-test/chastity-cortijo-98WE9hWWjiQ-unsplash.jpg" alt="">
-              <p>$1,999</p>
-            </a>
+            
+            {{if .ProductSam}}
+              {{range .ProductSam}}
+              <a href="/detailProduct?id={{.Id}}#" class="product">
+                <img src="{{.Image}}" alt="">
+                <p>$ {{.Price}}</p>
+              </a>
+              {{end}}
+            {{else}}
+              <h3>nothing.</h3>
+            {{end}}
+
+            
+            
           </div>
         </div>
       </div>

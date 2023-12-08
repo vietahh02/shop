@@ -8,14 +8,13 @@
     <script src="https://kit.fontawesome.com/9694815f86.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    {{if .}}
-        <p style="color: red; position: absolute;">{{.}}</p>
-    {{end}}
+    
 
     <div class="background-login">
         <div class="cover">
             <div class="login">
             <div><h1>Login</h1></div>
+            
             <div class="form">
                 <form action="/loginCus" method="post">
                     <div>
@@ -30,6 +29,9 @@
                         <input type="password" name="password" id="password" placeholder="Type your password">
                     </label>
                     </div> <br>
+                    {{if .}}
+                        <p style="color: red; position: relative;">{{.}}</p>
+                    {{end}}
                     <a href="#" class="forget">Forgot password?</a><br>
                     <button type="submit">Login</button>
                 </form>

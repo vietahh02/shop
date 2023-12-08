@@ -10,9 +10,7 @@
 </head>
 <body>
 
-    {{if .}}
-        <p style="color: red">{{.}}</p>
-    {{end}}
+    
 
     <div class="background-login">
         <div class="cover">
@@ -39,6 +37,9 @@
                         <input type="password" name="c-password" id="c-password" placeholder="Type your password">
                     </label>
                     </div><br>
+                    {{if .}}
+                        <p style="color: red">{{.}}</p>
+                    {{end}}
                     <a href="#" class="forget">Forgot password?</a><br>
                     <button type="submit">Login</button>
                 </form>

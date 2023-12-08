@@ -58,6 +58,7 @@ func main() {
 	http.HandleFunc("/myOrderDetail", myOrderDetail)
 	http.HandleFunc("/signOut", signOut)
 	http.HandleFunc("/forgetPassword", forgetPassword)
+	http.HandleFunc("/searchCate", searchCate)
 	//**Mail customer**
 	http.HandleFunc("/addMail", addMail)
 	http.HandleFunc("/verify", verify)
@@ -332,6 +333,31 @@ func searchBeta(w http.ResponseWriter, r *http.Request) {
 		}
 		tpl.ExecuteTemplate(w, "searchBeta.html", send{ListProduct: listProduct, ListCate: listCate})
 	}
+}
+
+func searchCate(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		idCate := r.FormValue("id")
+		_ = idCate
+		rows, _ := db.Query("SELECT idPro, NamePro, Price, Discount, Image, Star FROM shopcart.products where idCate = ?", idCate)
+		defer rows.Close()
+		var p m.Product
+		var listProduct []m.Product
+		for rows.Next() {
+			rows.Scan(&p.Id, &p.Name, &p.Price, &p.Discount, &p.Image, &p.Star)
+			if p.Discount != 0 {
+				p.Discount = math.Round(p.Price*(1-p.Discount)*100) / 100
+			}
+			listProduct = append(listProduct, p)
+		}
+		listCate := listCategories()
+		type send struct {
+			ListProduct []m.Product
+			ListCate    []m.Category
+		}
+		tpl.ExecuteTemplate(w, "searchBeta.html", send{ListProduct: listProduct, ListCate: listCate})
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func myOrderDetailBeta(w http.ResponseWriter, r *http.Request) {
@@ -1014,6 +1040,14 @@ func detailProduct(w http.ResponseWriter, r *http.Request) {
 			rating, _ = strconv.ParseFloat(co.Star, 64)
 			allRating += rating
 		}
+		var pSam []m.Product
+		var p1 m.Product
+		rows, _ = db.Query("SELECT idPro, NamePro, Image,  round(price*Discount, 2) FROM shopcart.products where idCate = ? and idPro != ? limit 5", p.Category.IdCate, p.Id)
+		for rows.Next() {
+			rows.Scan(&p1.Id, &p1.Name, &p1.Image, &p1.Price)
+			pSam = append(pSam, p1)
+		}
+
 		type lit struct {
 			ListCate    []m.Category
 			P           m.Product
@@ -1025,11 +1059,12 @@ func detailProduct(w http.ResponseWriter, r *http.Request) {
 			Sta         int
 			Pa          int
 			AllSta      string
+			ProductSam  []m.Product
 		}
 		all := len(listComment)
 		allRating = allRating / float64(len(listComment))
 		a := strconv.FormatFloat(allRating, 'f', 1, 64)
-		n := lit{P: p, C: listColor, I: listImage, ListCate: listCate, ListComment: listComment, All: all, AllSta: a}
+		n := lit{P: p, C: listColor, I: listImage, ListCate: listCate, ListComment: listComment, All: all, AllSta: a, ProductSam: pSam}
 		tpl.ExecuteTemplate(w, "detailProduct.html", n)
 		return
 	}

@@ -65,14 +65,14 @@
     <div class="menu-categories">
       {{range $i, $e := .ListCate}}
       {{if le $i 5}}
-      <a href="#">{{$e.NameCate}}</a>
+      <a href="/searchCate?id={{$e.IdCate}}">{{$e.NameCate}}</a>
       {{else}}
       {{end}}
       {{end}}
     </div>
     <div class="info-cate">
       {{range .ListCate}}
-      <div><a href="#">{{.NameCate}}</a></div>
+      <div><a href="/searchCate?id={{.IdCate}}">{{.NameCate}}</a></div>
       {{end}}
     </div>
   </div>

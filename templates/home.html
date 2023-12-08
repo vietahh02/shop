@@ -24,7 +24,7 @@
         {{if le $i 8}}
         <div class="category">
           <i class="fa-regular fa-circle-play" style="color: #a6a6a6;"></i>
-          <a href="#">{{$e.NameCate}}</a>
+          <a href="/searchCate?id={{$e.IdCate}}">{{$e.NameCate}}</a>
         </div>
         <div class="line"></div>
         {{end}}
@@ -127,6 +127,7 @@
         <div class="line"></div>
         <div class="list-product">
           {{range .News}}
+          <a href="/detailProduct?id={{.Id}}#" class="hot-deal">
           <div class="new-product">
             <div class="img-product">
               <img src="{{.Image}}" alt="">
@@ -161,6 +162,7 @@
               </div>
             </div>
           </div>
+          </a>
           {{end}}
           </div>
         </div>
@@ -174,6 +176,7 @@
           <div class="line"></div>
           <div class="list-special-deal">
             {{range .Specials}}
+            <a href="/detailProduct?id={{.Id}}#" class="hot-deal">
             <div class="special-deal">
             <div class="img-deal">
               <img src="{{.Image}}" alt="">
@@ -195,6 +198,7 @@
               </div>
             </div>
             </div>
+            </a>
             {{end}}
           </div>
           
@@ -240,6 +244,7 @@
         <div class="line"></div>
         <div class="list-product-late">
           {{range .Latests}}
+          <a href="/detailProduct?id={{.Id}}#" class="hot-deal">
           <div class="late-product">
             <div class="img-product">
               <img src="{{.Image}}" alt="">
@@ -274,6 +279,7 @@
               </div>
             </div>
           </div>
+          </a>
           {{end}}
         </div>
         </div>
@@ -296,14 +302,15 @@
           <div class="list-product-feature">
 
             {{range $i, $e := .ListPro}}
-            
-            <script style="display: none;">
+              <script style="display: none;">
               k = "{{$i}}";
               ih++;
               if (k%2 == 0) {
                 document.writeln("<div class=\"feature-product-s\">")
               }
               </script>
+            <a href="/detailProduct?id={{.Id}}#" class="">
+
               <div class="feature-product-al">
                 <div class="img-product">
                   <img src="{{.Image}}" alt="">
@@ -338,6 +345,8 @@
                   </div>
                 </div>
               </div> 
+            </a>
+
               <script>
               
               if (k%2 == 1){
@@ -345,8 +354,7 @@
               }
 
 
-            </script>
-    
+              </script>
             {{end}}
             <script style="display: none;">if(ih%2!=0){document.writeln("</div>")}</script>
             
