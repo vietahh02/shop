@@ -21,7 +21,7 @@
       <div class="body-header-cate">
         {{range $i, $e := .ListCate}}
         
-        {{if eq $i 8}}
+        {{if le $i 8}}
         <div class="category">
           <i class="fa-regular fa-circle-play" style="color: #a6a6a6;"></i>
           <a href="#">{{$e.NameCate}}</a>
