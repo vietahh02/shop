@@ -118,3 +118,7 @@ body {
   color: blue;
   text-decoration: underline;
 }/*# sourceMappingURL=styleh.css.map */
+
+.no {
+  display: none;
+}

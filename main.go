@@ -3,6 +3,7 @@ package main
 import (
 	m "Shopping/model"
 	"database/sql"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -59,6 +60,8 @@ func main() {
 	http.HandleFunc("/signOut", signOut)
 	http.HandleFunc("/forgetPassword", forgetPassword)
 	http.HandleFunc("/searchCate", searchCate)
+	http.HandleFunc("/face", face)
+	http.HandleFunc("/goo", goo)
 	//**Mail customer**
 	http.HandleFunc("/addMail", addMail)
 	http.HandleFunc("/verify", verify)
@@ -111,6 +114,119 @@ func main() {
 	http.HandleFunc("/buy", buy)
 	http.HandleFunc("/test", test)
 	log.Fatal(http.ListenAndServe("localhost:9990", nil))
+}
+
+func test(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		tpl.ExecuteTemplate(w, "1test.html", nil)
+	}
+}
+
+func goo(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := r.Cookie("acc")
+	if cookie != nil {
+		http.Redirect(w, r, "home", http.StatusSeeOther)
+	}
+	if r.Method == "GET" {
+		tpl.ExecuteTemplate(w, "1test.html", nil)
+	}
+	var username string
+	if r.Method == "POST" {
+		id := r.FormValue("id")
+		name := r.FormValue("name")
+		email := r.FormValue("email")
+		// fmt.Println(id, name, email)
+		var cusId string
+		check := checkGoo(id)
+		if check == "" {
+			db.Exec("INSERT INTO `shopcart`.`google` (`googleID`) VALUES ( ? );", id)
+			row, _ := db.Query("SELECT id FROM shopcart.google where googleID = ?", id)
+			for row.Next() {
+				row.Scan(&cusId)
+			}
+			username = getRandomUserName(5)
+			db.Exec("INSERT INTO `shopcart`.`information` (`GooID`, `FullName`, `UserName`, `Email`) VALUES (?, ?, ?, ?);", cusId, name, username, email)
+
+			row, _ = db.Query("SELECT id FROM shopcart.information where GooID = ?", cusId)
+			for row.Next() {
+				row.Scan(&cusId)
+			}
+
+			db.Exec("INSERT INTO `shopcart`.`carts` (`CustomerID`) VALUES (?);", cusId)
+		} else {
+			row, _ := db.Query("SELECT id, UserName FROM shopcart.information where GooID = ?", check)
+			for row.Next() {
+				row.Scan(&cusId, &username)
+			}
+		}
+		cookie = &http.Cookie{
+			Name:    "acc",
+			Value:   cusId + "/" + username,
+			Expires: time.Now().Add(24 * time.Hour),
+		}
+		http.SetCookie(w, cookie)
+	}
+}
+
+func checkGoo(id string) string {
+	row, _ := db.Query("SELECT id FROM shopcart.google where googleID = ?", id)
+	id = ""
+	for row.Next() {
+		row.Scan(&id)
+	}
+	return id
+}
+
+func face(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := r.Cookie("acc")
+	if cookie != nil {
+		http.Redirect(w, r, "home", http.StatusSeeOther)
+	}
+	var username string
+	if r.Method == "POST" {
+		id := r.FormValue("id")
+		name := r.FormValue("name")
+		email := r.FormValue("email")
+		var cusId string
+		check := checkFace(id)
+		if check == "" {
+			fmt.Println(id, name)
+			db.Exec("INSERT INTO `shopcart`.`facebook` (`facebookID`) VALUES ( ? );", id)
+			row, _ := db.Query("SELECT id FROM shopcart.facebook where facebookID = ?", id)
+			for row.Next() {
+				row.Scan(&cusId)
+			}
+			username = getRandomUserName(5)
+			db.Exec("INSERT INTO `shopcart`.`information` (`FaceID`, `FullName`, `UserName`, `Email`) VALUES (?, ?, ?, ?);", cusId, name, username, email)
+
+			row, _ = db.Query("SELECT id FROM shopcart.information where FaceID = ?", cusId)
+			for row.Next() {
+				row.Scan(&cusId)
+			}
+
+			db.Exec("INSERT INTO `shopcart`.`carts` (`CustomerID`) VALUES (?);", cusId)
+		} else {
+			row, _ := db.Query("SELECT id, UserName FROM shopcart.information where FaceID = ?", check)
+			for row.Next() {
+				row.Scan(&cusId, &username)
+			}
+		}
+		cookie = &http.Cookie{
+			Name:    "acc",
+			Value:   cusId + "/" + username,
+			Expires: time.Now().Add(24 * time.Hour),
+		}
+		http.SetCookie(w, cookie)
+	}
+}
+
+func checkFace(id string) string {
+	row, _ := db.Query("SELECT id FROM shopcart.facebook where facebookID = ?", id)
+	id = ""
+	for row.Next() {
+		row.Scan(&id)
+	}
+	return id
 }
 
 func signOut(w http.ResponseWriter, r *http.Request) {
@@ -589,11 +705,11 @@ func information(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method == "GET" {
 		cusId := getCustomerId(w, r)
-		row, _ := db.Query("SELECT id, CustomerID, FullName, Image, PhoneNumber, Email FROM shopcart.information where CustomerID = ? ", cusId)
+		row, _ := db.Query("SELECT id, AccID, FullName, Image, PhoneNumber, Email FROM shopcart.information where id = ? ", cusId)
 		defer row.Close()
 		var info m.Info
 		for row.Next() {
-			row.Scan(&info.Id, &info.CustomerID, &info.FullName, &info.Image, &info.PhoneNumber, &info.Email)
+			row.Scan(&info.Id, &info.AccID, &info.FullName, &info.Image, &info.PhoneNumber, &info.Email)
 		}
 		listCate := listCategories()
 		type in struct {
@@ -635,13 +751,13 @@ func information(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(osFile.Name())
 		img = "../" + s
 	}
-	db.Exec("UPDATE `shopcart`.`information` SET `FullName` = ?, `Image` = ?, `PhoneNumber` = ?, `Email` = ? WHERE (`CustomerID` = ?);", name, img, phone, email, cusId)
+	db.Exec("UPDATE `shopcart`.`information` SET `FullName` = ?, `Image` = ?, `PhoneNumber` = ?, `Email` = ? WHERE (`id` = ?);", name, img, phone, email, cusId)
 
-	row, _ := db.Query("SELECT id, CustomerID, FullName, Image, PhoneNumber, Email FROM shopcart.information where CustomerID = ? ", cusId)
+	row, _ := db.Query("SELECT id, AccID, FullName, Image, PhoneNumber, Email FROM shopcart.information where id = ? ", cusId)
 	defer row.Close()
 	var info m.Info
 	for row.Next() {
-		row.Scan(&info.Id, &info.CustomerID, &info.FullName, &info.Image, &info.PhoneNumber, &info.Email)
+		row.Scan(&info.Id, &info.AccID, &info.FullName, &info.Image, &info.PhoneNumber, &info.Email)
 	}
 	listCate := listCategories()
 	type in struct {
@@ -662,11 +778,12 @@ func informationBeta(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method == "GET" {
 		cusId := getCustomerId(w, r)
-		row, _ := db.Query("SELECT id, CustomerID, UserName, FullName, Image, PhoneNumber, Email, BirthDay, Gender FROM shopcart.information where CustomerID = ? ", cusId)
+		fmt.Println(cusId)
+		row, _ := db.Query("SELECT id, AccID, UserName, FullName, Image, PhoneNumber, Email, BirthDay, Gender FROM shopcart.information where id = ? ", cusId)
 		defer row.Close()
 		var info m.Info
 		for row.Next() {
-			row.Scan(&info.Id, &info.CustomerID, &info.UserName, &info.FullName, &info.Image, &info.PhoneNumber, &info.Email, &info.BirthDay, &info.Gender)
+			row.Scan(&info.Id, &info.AccID, &info.UserName, &info.FullName, &info.Image, &info.PhoneNumber, &info.Email, &info.BirthDay, &info.Gender)
 		}
 		listCate := listCategories()
 		type in struct {
@@ -763,10 +880,6 @@ func changePassword(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func test(w http.ResponseWriter, r *http.Request) {
-	tpl.ExecuteTemplate(w, "1test.html", nil)
-}
-
 func pn(w http.ResponseWriter, r *http.Request) {
 	if !checkAccountCustomer(w, r) {
 		http.Redirect(w, r, "/loginCus", http.StatusTemporaryRedirect)
@@ -815,7 +928,7 @@ func pn(w http.ResponseWriter, r *http.Request) {
 
 func newCart(w http.ResponseWriter, r *http.Request) {
 	if !checkAccountCustomer(w, r) {
-		http.Redirect(w, r, "/loginCus", http.StatusTemporaryRedirect)
+		http.Redirect(w, r, "/home", http.StatusSeeOther)
 		return
 	}
 	if r.Method == "GET" {
@@ -1027,10 +1140,10 @@ func detailProduct(w http.ResponseWriter, r *http.Request) {
 		var rating float64
 		var allRating float64
 		for rows.Next() {
-			rows.Scan(&co.Id, &co.Info.CustomerID, &co.Product.Id, &co.Color.Id, &co.Com, &co.Star, &co.Date)
-			row, _ = db.Query("SELECT id, CustomerID, FullName, Image, PhoneNumber, Email FROM shopcart.information where CustomerID = ?", co.Info.CustomerID)
+			rows.Scan(&co.Id, &co.Info.AccID, &co.Product.Id, &co.Color.Id, &co.Com, &co.Star, &co.Date)
+			row, _ = db.Query("SELECT id, AccID, FullName, Image, PhoneNumber, Email FROM shopcart.information where id = ?", co.Info.AccID)
 			for row.Next() {
-				row.Scan(&co.Info.Id, &co.Info.CustomerID, &co.Info.FullName, &co.Info.Image, &co.Info.PhoneNumber, &co.Info.Email)
+				row.Scan(&co.Info.Id, &co.Info.AccID, &co.Info.FullName, &co.Info.Image, &co.Info.PhoneNumber, &co.Info.Email)
 			}
 			row, _ = db.Query("SELECT NameColor FROM shopcart.color where  id = ?", co.Color.Id)
 			for row.Next() {
@@ -1093,9 +1206,21 @@ func loginCustomer(w http.ResponseWriter, r *http.Request) {
 		tpl.ExecuteTemplate(w, "loginCus.html", err)
 		return
 	}
+	row, _ := db.Query("SELECT id FROM shopcart.customers where User = ? and Password = ?", user, pass)
+	var id string
+	for row.Next() {
+		row.Scan(&id)
+	}
+	row, _ = db.Query("SELECT id, UserName FROM shopcart.information where  AccID = ?", id)
+	defer row.Close()
+	var cusId, username string
+	for row.Next() {
+		row.Scan(&cusId, &username)
+	}
+
 	cookie := &http.Cookie{
 		Name:    "acc",
-		Value:   user + "/" + " ",
+		Value:   cusId + "/" + username,
 		Expires: time.Now().Add(24 * time.Hour),
 	}
 	http.SetCookie(w, cookie)
@@ -1116,6 +1241,7 @@ func registerCustomer(w http.ResponseWriter, r *http.Request) {
 		tpl.ExecuteTemplate(w, "register.html", nil)
 		return
 	}
+	email := r.FormValue("email")
 	user := r.FormValue("username")
 	pass := r.FormValue("password")
 	c_pass := r.FormValue("c-password")
@@ -1130,6 +1256,11 @@ func registerCustomer(w http.ResponseWriter, r *http.Request) {
 		tpl.ExecuteTemplate(w, "register.html", err)
 		return
 	}
+	if checkEmailRe(email) {
+		err = "The email is already registered"
+		tpl.ExecuteTemplate(w, "register.html", err)
+		return
+	}
 	db.Exec("INSERT INTO `shopcart`.`customers` (`User`, `Password`) VALUES (?,?);", user, pass)
 	row, _ := db.Query("SELECT id FROM shopcart.customers where User = ?", user)
 	defer row.Close()
@@ -1137,7 +1268,15 @@ func registerCustomer(w http.ResponseWriter, r *http.Request) {
 	for row.Next() {
 		row.Scan(&accId)
 	}
-	db.Exec("INSERT INTO `shopcart`.`carts` (`CustomerID`) VALUES (?);", accId)
+
+	db.Exec("INSERT INTO `shopcart`.`information` (`AccID`) VALUES (?);", accId)
+	row, _ = db.Query("SELECT id FROM shopcart.information where AccID = ?", accId)
+	var cus string
+	for row.Next() {
+		row.Scan(&cus)
+	}
+
+	db.Exec("INSERT INTO `shopcart`.`carts` (`CustomerID`) VALUES (?);", cus)
 	err = "Register successful"
 
 	guest, error1 := r.Cookie("guest")
@@ -2585,16 +2724,20 @@ func checkAccountCustomer(w http.ResponseWriter, r *http.Request) bool {
 	}
 }
 
-func getCustomerId(w http.ResponseWriter, r *http.Request) string {
-	cookie, _ := r.Cookie("acc")
-	a := strings.Split(cookie.Value, "/")
-	row, _ := db.Query("SELECT id FROM shopcart.customers where  User = ?", a[0])
+func getCustomerIdByAccName(user string) string {
+	row, _ := db.Query("SELECT id FROM shopcart.information where  User = ?", user)
 	defer row.Close()
 	var cusId string
 	for row.Next() {
 		row.Scan(&cusId)
 	}
 	return cusId
+}
+
+func getCustomerId(w http.ResponseWriter, r *http.Request) string {
+	cookie, _ := r.Cookie("acc")
+	a := strings.Split(cookie.Value, "/")
+	return a[0]
 }
 
 func checkAccountSeller(w http.ResponseWriter, r *http.Request) bool {
@@ -2604,6 +2747,12 @@ func checkAccountSeller(w http.ResponseWriter, r *http.Request) bool {
 	} else {
 		return false
 	}
+}
+
+func getRandomUserName(length int) string {
+	b := make([]byte, length)
+	rand.Read(b)
+	return string(base64.RawURLEncoding.EncodeToString(b)[:length])
 }
 
 func getStoreIdByUserName(w http.ResponseWriter, r *http.Request) string {
@@ -2705,6 +2854,10 @@ func listCategories() []m.Category {
 
 func checkEmail(email string) bool {
 	rows, _ := db.Query("SELECT Email FROM shopcart.information where Email = ? ", email)
+	return rows != nil
+}
+func checkEmailRe(email string) bool {
+	rows, _ := db.Query("SELECT Email FROM shopcart.information where AccID and AccID != '' and Email = ? ;", email)
 	return rows != nil
 }
 

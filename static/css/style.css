@@ -1707,3 +1707,7 @@ a {
     width: 80px;
   }
 }/*# sourceMappingURL=style.css.map */
+
+.no {
+  display: none;
+}

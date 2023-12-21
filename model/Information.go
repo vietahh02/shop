@@ -2,7 +2,7 @@ package model
 
 type Info struct {
 	Id          string `json:"id"`
-	CustomerID  string `json:"customer_id"`
+	AccID       string `json:"acc_id"`
 	UserName    string `json:"user_name"`
 	FullName    string `json:"full_name"`
 	Image       string `json:"image"`

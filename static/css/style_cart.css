@@ -433,3 +433,7 @@ table tr td select {
         font-size: 9px;
     }
 }
+
+.no {
+    display: none;
+  }

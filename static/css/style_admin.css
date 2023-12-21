@@ -142,3 +142,7 @@ a:hover {
 .container-sub-color .list-colors .item-color h3{
     font-weight: 500;
 }
+
+.no {
+    display: none;
+  }

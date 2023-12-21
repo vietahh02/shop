@@ -372,3 +372,7 @@ body {
     left: 5%;
     bottom: 2%;
 }
+
+.no {
+    display: none;
+  }

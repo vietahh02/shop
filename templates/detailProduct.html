@@ -290,17 +290,26 @@
           },3000); 
           return
         }
-
+        
         function getCookie(name) {
-          const cookies = document.cookie.split(';');
-          for (const cookie of cookies) {
-            const [key, value] = cookie.split('=');
-            if (key === name) {
-              return value;
-            }
+        const cookiePairs = document.cookie.split('; ');
+        for (const pair of cookiePairs) {
+          const [cookieName, cookieValue] = pair.split('=');
+          if (cookieName === name) {
+            return decodeURIComponent(cookieValue);
           }
-          return null;
         }
+        return null;
+      }
+
+      console.log(document.cookie.split('; '))
+
+      const usernameCookie = getCookie("acc");
+      if (usernameCookie) {
+        console.log(`Retrieved username: ${usernameCookie}`);
+      } else {
+        console.log("Username cookie not found.");
+      }
 
         if (getCookie('acc') != null) {
           xhttp.open("GET", "/newCart?idP={{.P.Id}}&idC="+col[0].innerHTML+"&amount=1#");

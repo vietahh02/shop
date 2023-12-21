@@ -9,7 +9,7 @@
         <div class="info">
             <a href="/loginSel">Seller</a>
             <p>&nbsp;</p>
-            <a href="/info-acc">My Account</a>
+            <a href="/informationBeta">My Account</a>
             <p></p>
             <a href="#">Wishlist</a>
             <p></p>
@@ -17,24 +17,37 @@
             <p></p>
             <a href="#">Checkout</a>
             <p></p>
-            <a href="/loginCus" id="a">Login</a>
+            <a href="/loginCus" id="a">LogIn</a>
+            <p class="no"></p>
+            <a href="#" class="no" onclick="deleteCookie('acc')">LogOut</a>
         </div>
           <script>
             const c = getCookie("acc");
             if (c != null) {
-              a = c.split("/");
-              document.getElementById('a').innerHTML = a[0];
+              a = c.split('/');
+              document.getElementById('a').innerHTML = a[1];
               document.getElementById('a').href = "#"
+              document.querySelectorAll('.no')[0].style = "display : block";
+              document.querySelectorAll('.no')[1].style = "display : block";
+
+            }else {
+              document.querySelectorAll('.no')[0].style = "display : none";
+              document.querySelectorAll('.no')[1].style = "display : none";
             }
             function getCookie(name) {
-              const cookies = document.cookie.split(';');
-              for (const cookie of cookies) {
-                  const [key, value] = cookie.split('=');
-                  if (key === name) {
-                      return value;
-                  }
+              const cookiePairs = document.cookie.split('; ');
+              for (const pair of cookiePairs) {
+                const [cookieName, cookieValue] = pair.split('=');
+                if (cookieName === name) {
+                  return decodeURIComponent(cookieValue);
+                }
               }
-                return null;
+              return null;
+            }
+            function deleteCookie(name) {
+              const expiresDate = new Date(Date.now() - 10000);
+              document.cookie = `${name}=; expires=${expiresDate.toUTCString()}; path=/`;
+              location.reload();
             }
           </script>
         <div class="search-cart">
