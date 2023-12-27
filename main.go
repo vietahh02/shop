@@ -1267,7 +1267,7 @@ func registerCustomer(w http.ResponseWriter, r *http.Request) {
 		row.Scan(&accId)
 	}
 
-	db.Exec("INSERT INTO `shopcart`.`information` (`AccID`, `Email`) VALUES (?,?);", accId, email)
+	db.Exec("INSERT INTO `shopcart`.`information` (`AccID`, `Email`, `UserName`) VALUES (?,?,?);", accId, email, getRandomUserName(5))
 	row, _ = db.Query("SELECT id FROM shopcart.information where AccID = ?", accId)
 	var cus string
 	for row.Next() {
