@@ -1195,27 +1195,25 @@ func loginCustomer(w http.ResponseWriter, r *http.Request) {
 	}
 	user := r.FormValue("username")
 	pass := r.FormValue("password")
-	err := ""
-	if !checkCustomer(user) {
-		err = "UserName not exist"
-		tpl.ExecuteTemplate(w, "loginCus.html", err)
-		return
-	}
-	if !checkPasswordCustomer(pass, user) {
-		err = "Password not correct"
-		tpl.ExecuteTemplate(w, "loginCus.html", err)
-		return
-	}
 	row, _ := db.Query("SELECT id FROM shopcart.customers where User = ? and Password = ?", user, pass)
+	defer row.Close()
 	var id string
 	for row.Next() {
 		row.Scan(&id)
 	}
-	row, _ = db.Query("SELECT id, UserName FROM shopcart.information where  AccID = ?", id)
-	defer row.Close()
 	var cusId, username string
-	for row.Next() {
-		row.Scan(&cusId, &username)
+
+	if id == "" {
+		row, _ = db.Query("SELECT  i.id, i.UserName FROM shopcart.information i, shopcart.customers c where AccID != \"\" and AccID = c.id and Email = ? and Password = ?", user, pass)
+
+		for row.Next() {
+			row.Scan(&cusId, &username)
+		}
+	} else {
+		row, _ = db.Query("SELECT id, UserName FROM shopcart.information where  AccID = ?", id)
+		for row.Next() {
+			row.Scan(&cusId, &username)
+		}
 	}
 
 	cookie := &http.Cookie{
@@ -1269,7 +1267,7 @@ func registerCustomer(w http.ResponseWriter, r *http.Request) {
 		row.Scan(&accId)
 	}
 
-	db.Exec("INSERT INTO `shopcart`.`information` (`AccID`) VALUES (?);", accId)
+	db.Exec("INSERT INTO `shopcart`.`information` (`AccID`, `Email`) VALUES (?,?);", accId, email)
 	row, _ = db.Query("SELECT id FROM shopcart.information where AccID = ?", accId)
 	var cus string
 	for row.Next() {
@@ -1314,8 +1312,8 @@ func registerCustomer(w http.ResponseWriter, r *http.Request) {
 		}
 		db.Exec("DELETE FROM `shopcart`.`guest_product` WHERE (`CartID` = ?);", guest.Value)
 	}
-	// http.Redirect(w, r, "/", http.StatusSeeOther)
-	tpl.ExecuteTemplate(w, "login.html", err)
+	// http.Redirect(w, r, "/loginCus", http.StatusSeeOther)
+	tpl.ExecuteTemplate(w, "register.html", err)
 }
 
 func forgetPassword(w http.ResponseWriter, r *http.Request) {
@@ -2858,7 +2856,12 @@ func checkEmail(email string) bool {
 }
 func checkEmailRe(email string) bool {
 	rows, _ := db.Query("SELECT Email FROM shopcart.information where AccID and AccID != '' and Email = ? ;", email)
-	return rows != nil
+	check := ""
+	for rows.Next() {
+		rows.Scan(&check)
+	}
+	return check != ""
+	// return true
 }
 
 // ***********res*******

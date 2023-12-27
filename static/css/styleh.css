@@ -39,6 +39,7 @@ body {
   padding-left: 50px;
 }
 .login .form input[type=text],
+.login .form input[type=email],
 .login .form input[type=password] {
   position: relative;
   left: 15px;
@@ -48,10 +49,13 @@ body {
   font-size: 16px;
   margin-top: 5px;
 }
-.login .form input[type=text]::-moz-placeholder, .login .form input[type=password]::-moz-placeholder {
+.login .form input[type=text]::-moz-placeholder,
+.login .form input[type=email]::-moz-placeholder,
+.login .form input[type=password]::-moz-placeholder {
   color: rgb(199, 199, 199);
 }
 .login .form input[type=text]::placeholder,
+.login .form input[type=email]::placeholder,
 .login .form input[type=password]::placeholder {
   color: rgb(199, 199, 199);
 }
