@@ -201,6 +201,7 @@
                 <div class="co">Color:&nbsp;</div><div class="na name-color" id="name-color">None</div>
               </div>
               {{end}}
+              <h4></h4>
           </div>
           <div class="time">
             <p><i class="fa-regular fa-calendar-check"></i> Delivery from sweden, 15-45 days</p>
@@ -279,12 +280,23 @@
       const xhttp = new XMLHttpRequest();
       const col = document.getElementsByClassName('name-color');
       const a = document.getElementById('amount');
+      const pickColor = document.querySelector('.pick-color')
+      const color1 = document.querySelector('.color')
+      const color2 = document.querySelector('.color h4')
       let amount = "{{.P.InStock}}"
+
+      pickColor.addEventListener('click', () => {
+        color1.style.backgroundColor = '#fff'
+        color2.innerHTML = ''
+      })
+
       add.addEventListener('click', () =>{
         if(col[0].innerHTML == "") {
           notification.innerHTML = `Choose a color`
           notification.style.display = "block";
           notification.style.color = "red"
+          color1.style.backgroundColor = '#ff7f90'
+          color2.innerHTML = 'Choose a color'
           setTimeout(function() {
             notification.style.display = "none";
           },3000); 
@@ -300,7 +312,7 @@
           }
         }
         return null;
-      }
+        }
 
       console.log(document.cookie.split('; '))
 
